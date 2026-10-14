@@ -9,6 +9,31 @@
 
 .attendances-hint { margin: var(--space-3) 0 0; color: var(--color-text-muted); font-size: var(--text-sm); line-height: 1.6; }
 
+/* Descarga del Excel (RF-17). `margin-top: auto` lo alinea con los filtros,
+   que son más altos por su etiqueta */
+.attendances-export {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: var(--space-1);
+  margin-top: auto;
+}
+
+.attendances-export-scope {
+  overflow: hidden;
+  color: var(--color-text-muted);
+  font-size: var(--text-xs);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.attendances-export-note {
+  margin: 0 0 var(--space-4);
+  color: var(--color-text-body);
+  font-size: var(--text-sm);
+  line-height: 1.6;
+}
+
 /* Tabla estudiante × fecha */
 .grid-wrap {
   overflow-x: auto;
