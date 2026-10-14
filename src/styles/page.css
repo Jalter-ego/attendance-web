@@ -43,6 +43,39 @@
 .secondary-button:hover { background: var(--color-surface-tint-hover); }
 .secondary-button:focus-visible { outline: 3px solid var(--color-brand-ring); outline-offset: 3px; }
 
+/* Mensaje de éxito o error tras una acción (RF-18) */
+.page-feedback {
+  margin: 0 0 var(--space-4);
+  padding: 12px 14px;
+  border-radius: var(--radius-md);
+  font-size: var(--text-md);
+}
+
+.page-feedback--success { color: var(--color-success); background: var(--color-success-bg); }
+.page-feedback--error { color: var(--color-danger); background: var(--color-danger-bg); }
+
+/* Tarjetas de totales */
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin: 0 0 var(--space-5);
+}
+
+.summary-card {
+  padding: 18px 20px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+}
+
+.summary-card dt { color: var(--color-text-body); font-size: var(--text-sm); }
+.summary-card dd { margin: 6px 0 0; font-size: 28px; font-weight: 700; letter-spacing: -0.5px; }
+.summary-card--present dd { color: var(--color-present); }
+.summary-card--absent dd { color: var(--color-absent); }
+.summary-card--pending dd { color: var(--color-pending); }
+.summary-card--upcoming dd { color: var(--color-upcoming); }
+
 /* Oculto a la vista pero leído por lectores de pantalla */
 .visually-hidden {
   position: absolute;
@@ -51,6 +84,10 @@
   overflow: hidden;
   clip-path: inset(50%);
   white-space: nowrap;
+}
+
+@media (max-width: 720px) {
+  .summary-grid { grid-template-columns: repeat(2, 1fr); }
 }
 
 @media (max-width: 480px) {

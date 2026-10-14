@@ -46,7 +46,7 @@ function AttendanceHistory({ history, marking, feedback, onMark }: AttendanceHis
       </dl>
 
       {feedback && (
-        <p className={`history-feedback history-feedback--${feedback.type}`} role={feedback.type === 'error' ? 'alert' : 'status'}>
+        <p className={`page-feedback page-feedback--${feedback.type}`} role={feedback.type === 'error' ? 'alert' : 'status'}>
           {feedback.text}
         </p>
       )}

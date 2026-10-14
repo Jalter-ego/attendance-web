@@ -9,6 +9,7 @@ import './AdminLayout.css'
 const sections = [
   { to: paths.adminHome, label: 'Inicio', end: true },
   { to: paths.adminStudents, label: 'Estudiantes', end: false },
+  { to: paths.adminAttendances, label: 'Asistencias', end: false },
 ]
 
 /** Marco común del área del administrador: encabezado y menú entre sus vistas (F12) */

@@ -18,6 +18,19 @@ export function formatClassDate(classDate: string): string {
   return text.charAt(0).toUpperCase() + text.slice(1)
 }
 
+const shortDateFormat = new Intl.DateTimeFormat('es', {
+  weekday: 'short',
+  day: '2-digit',
+  month: '2-digit',
+  timeZone: 'UTC',
+})
+
+/** Versión corta para encabezados de columna, p. ej. "mar, 14/10" */
+export function formatShortDate(classDate: string): string {
+  const [year, month, day] = classDate.split('-').map(Number)
+  return shortDateFormat.format(new Date(Date.UTC(year, month - 1, day)))
+}
+
 export function formatMarkedAt(markedAt: string): string {
   return timeFormat.format(new Date(markedAt))
 }

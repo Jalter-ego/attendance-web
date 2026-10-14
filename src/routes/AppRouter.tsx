@@ -3,6 +3,7 @@ import { useSession } from '../features/auth/context/useSession'
 import type { LoginCredentials } from '../features/auth/types/session'
 import AdminLayout from '../layouts/AdminLayout'
 import AdminHomePage from '../pages/AdminHomePage/AdminHomePage'
+import AttendancesPage from '../pages/AttendancesPage/AttendancesPage'
 import LoginPage from '../pages/LoginPage/LoginPage'
 import StudentAttendancePage from '../pages/StudentAttendancePage/StudentAttendancePage'
 import StudentsPage from '../pages/StudentsPage/StudentsPage'
@@ -73,6 +74,7 @@ function AppRouter() {
         <Route element={<AdminLayout />}>
           <Route path={paths.adminHome} element={<AdminHomePage />} />
           <Route path={paths.adminStudents} element={<StudentsPage />} />
+          <Route path={paths.adminAttendances} element={<AttendancesPage />} />
         </Route>
       </Route>
 
