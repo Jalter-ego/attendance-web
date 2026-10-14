@@ -1,4 +1,4 @@
-import { ApiError, apiRequest } from '../../../lib/api.ts'
+import { ApiError, apiDownload, apiRequest } from '../../../lib/api.ts'
 import type { AttendanceOverview, AttendanceUpdate, OverviewRecord } from '../types/admin.ts'
 
 const STATUSES = ['present', 'absent', 'pending', 'upcoming']
@@ -34,6 +34,25 @@ export async function fetchOverview(token: string, signal?: AbortSignal): Promis
     return data as AttendanceOverview
   }
   throw invalidResponse()
+}
+
+/** Filtros que el API sabe aplicar al export (RF-17) */
+export interface ExportFilters {
+  date?: string
+  studentId?: string
+}
+
+export async function downloadAttendances(
+  token: string,
+  filters: ExportFilters = {},
+): Promise<{ blob: Blob; filename: string }> {
+  const query = new URLSearchParams()
+  if (filters.date) query.set('date', filters.date)
+  if (filters.studentId) query.set('studentId', filters.studentId)
+  const suffix = query.size > 0 ? `?${query.toString()}` : ''
+
+  const { blob, filename } = await apiDownload(`/attendances/export${suffix}`, { token })
+  return { blob, filename: filename ?? 'asistencias.xlsx' }
 }
 
 export async function updateAttendance(

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import ConfirmDialog, { type DialogAction } from '../../components/shared/ConfirmDialog'
 import AttendanceGrid from '../../features/attendance/components/AttendanceGrid'
+import { useAttendanceExport } from '../../features/attendance/hooks/use-attendance-export'
 import { cellKey, useAttendanceOverview } from '../../features/attendance/hooks/use-attendance-overview'
 import type { OverviewRecord, OverviewStudent } from '../../features/attendance/types/admin'
 import type { ClassSession } from '../../features/attendance/types/attendance'
@@ -12,6 +13,7 @@ import './AttendancesPage.css'
 function AttendancesPage() {
   const session = useAdminSession()
   const { state, saving, feedback, change, retry } = useAttendanceOverview(session.accessToken)
+  const exporter = useAttendanceExport(session.accessToken)
   const [dateFilter, setDateFilter] = useState('')
   const [studentFilter, setStudentFilter] = useState('')
   const [editing, setEditing] = useState<OverviewRecord | null>(null)
@@ -50,6 +52,16 @@ function AttendancesPage() {
     { label: 'Pendientes hoy', value: total('pending'), tone: 'pending' },
     { label: 'Por venir', value: total('upcoming'), tone: 'upcoming' },
   ]
+
+  // El API filtra el export por `studentId`, pero el buscador de arriba es texto
+  // libre: solo se puede trasladar cuando deja un único estudiante a la vista.
+  // Con varios, el archivo trae a todos y se avisa debajo del botón
+  const onlyStudent = term && students.length === 1 ? students[0] : null
+  const exportMismatch = term.length > 0 && students.length > 1
+  const exportScope = [
+    dateFilter ? formatClassDate(dateFilter).toLowerCase() : 'todas las fechas',
+    onlyStudent ? onlyStudent.fullName : 'todos los estudiantes',
+  ].join(' · ')
 
   function choose(status: 'present' | 'absent') {
     if (!editing) return
@@ -90,7 +102,39 @@ function AttendancesPage() {
             autoComplete="off"
           />
         </label>
+
+        {/* RF-17 */}
+        <div className="attendances-export">
+          <button
+            className="secondary-button"
+            type="button"
+            onClick={() => void exporter.exportTo({
+              date: dateFilter || undefined,
+              studentId: onlyStudent?.id,
+            })}
+            disabled={exporter.exporting || allSessions.length === 0 || allStudents.length === 0}
+          >
+            {exporter.exporting ? 'Generando…' : 'Descargar Excel'}
+          </button>
+          <span className="attendances-export-scope">{exportScope}</span>
+        </div>
       </div>
+
+      {exporter.feedback && (
+        <p
+          className={`page-feedback page-feedback--${exporter.feedback.type}`}
+          role={exporter.feedback.type === 'error' ? 'alert' : 'status'}
+        >
+          {exporter.feedback.text}
+        </p>
+      )}
+
+      {exportMismatch && (
+        <p className="attendances-export-note">
+          El archivo incluye a todos los estudiantes: la búsqueda por texto no se puede aplicar a la
+          descarga. Déjala en un solo estudiante si quieres exportarlo aparte.
+        </p>
+      )}
 
       <dl className="summary-grid">
         {cards.map((card) => (
