@@ -1,0 +1,79 @@
+.import-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-5);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+}
+
+.import-card-header { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); }
+.import-card-header h3 { margin: 0; font-size: var(--text-lg); }
+
+.import-count {
+  padding: 3px 10px;
+  border-radius: var(--radius-pill);
+  color: var(--color-upcoming);
+  background: var(--color-upcoming-bg);
+  font-size: var(--text-sm);
+  font-weight: 700;
+}
+
+.import-count.is-loaded { color: var(--color-present); background: var(--color-present-bg); }
+
+.import-columns,
+.import-note { margin: 0; color: var(--color-text-body); font-size: var(--text-base); line-height: 1.6; }
+
+.import-columns code {
+  padding: 1px 6px;
+  border-radius: 4px;
+  color: var(--color-text-strong);
+  background: var(--color-surface-tint);
+  font-size: var(--text-sm);
+}
+
+.import-form { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3); }
+.import-form input[type='file'] { flex: 1 1 200px; min-width: 0; font-size: var(--text-base); }
+
+.import-button {
+  padding: 10px 16px;
+  border: 0;
+  border-radius: var(--radius-sm);
+  color: #fff;
+  background: var(--color-brand);
+  font-size: var(--text-base);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.import-button:hover:not(:disabled) { background: var(--color-brand-stronger); }
+.import-button:focus-visible { outline: 3px solid var(--color-brand-ring); outline-offset: 3px; }
+.import-button:disabled { cursor: not-allowed; opacity: 0.55; }
+
+.import-card .page-feedback { margin: 0; }
+
+/* Filas a corregir del 422 (RF-11) */
+.import-errors { display: grid; gap: var(--space-3); }
+
+.import-errors-wrap {
+  max-height: 260px;
+  overflow: auto;
+  border: 1px solid var(--color-danger-border);
+  border-radius: var(--radius-md);
+}
+
+.import-errors-table { width: 100%; border-collapse: collapse; font-size: var(--text-base); }
+
+.import-errors-table th {
+  position: sticky;
+  top: 0;
+  padding: 8px 12px;
+  color: var(--color-danger);
+  background: var(--color-danger-bg);
+  font-size: var(--text-sm);
+  text-align: left;
+}
+
+.import-errors-table td { padding: 8px 12px; border-top: 1px solid var(--color-danger-border); }
+.import-errors-table td:first-child { font-variant-numeric: tabular-nums; font-weight: 600; }

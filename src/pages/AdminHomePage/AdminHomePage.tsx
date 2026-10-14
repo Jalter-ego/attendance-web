@@ -7,7 +7,7 @@ import './AdminHomePage.css'
 const areas: { title: string; text: string; to?: string }[] = [
   { title: 'Estudiantes', text: 'Consulta y busca los estudiantes del módulo activo.', to: paths.adminStudents },
   { title: 'Asistencias', text: 'Revisa y corrige los registros del módulo activo.', to: paths.adminAttendances },
-  { title: 'Módulos', text: 'Importa estudiantes y fechas, y activa un nuevo módulo.' },
+  { title: 'Módulos', text: 'Importa estudiantes y fechas, y activa un nuevo módulo.', to: paths.adminModules },
   { title: 'Actividad', text: 'Consulta el historial de acciones del módulo activo.' },
 ]
 

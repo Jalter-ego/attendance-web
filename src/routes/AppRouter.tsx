@@ -5,6 +5,8 @@ import AdminLayout from '../layouts/AdminLayout'
 import AdminHomePage from '../pages/AdminHomePage/AdminHomePage'
 import AttendancesPage from '../pages/AttendancesPage/AttendancesPage'
 import LoginPage from '../pages/LoginPage/LoginPage'
+import ModuleDetailPage from '../pages/ModuleDetailPage/ModuleDetailPage'
+import ModulesPage from '../pages/ModulesPage/ModulesPage'
 import StudentAttendancePage from '../pages/StudentAttendancePage/StudentAttendancePage'
 import StudentsPage from '../pages/StudentsPage/StudentsPage'
 import ProtectedRoute from './ProtectedRoute'
@@ -75,6 +77,8 @@ function AppRouter() {
           <Route path={paths.adminHome} element={<AdminHomePage />} />
           <Route path={paths.adminStudents} element={<StudentsPage />} />
           <Route path={paths.adminAttendances} element={<AttendancesPage />} />
+          <Route path={paths.adminModules} element={<ModulesPage />} />
+          <Route path={paths.adminModuleDetail} element={<ModuleDetailPage />} />
         </Route>
       </Route>
 

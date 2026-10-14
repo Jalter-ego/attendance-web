@@ -5,26 +5,6 @@
   margin-bottom: var(--space-5);
 }
 
-.filter-field { display: flex; flex: 1 1 240px; flex-direction: column; gap: 6px; max-width: 340px; }
-.filter-field > span { color: var(--color-text-label); font-size: var(--text-sm); font-weight: 600; }
-
-.filter-field select,
-.filter-field input {
-  width: 100%;
-  padding: 10px 12px;
-  border: 1px solid var(--color-border-control);
-  border-radius: var(--radius-md);
-  color: var(--color-text);
-  background: var(--color-surface);
-  font: inherit;
-  font-size: var(--text-md);
-}
-
-.filter-field select:hover,
-.filter-field input:hover { border-color: var(--color-border-hover); }
-.filter-field select:focus,
-.filter-field input:focus { border-color: var(--color-brand-soft); outline: var(--focus-ring); }
-
 .attendances-empty { color: var(--color-text-body); }
 
 .attendances-hint { margin: var(--space-3) 0 0; color: var(--color-text-muted); font-size: var(--text-sm); line-height: 1.6; }

@@ -43,6 +43,57 @@
 .secondary-button:hover { background: var(--color-surface-tint-hover); }
 .secondary-button:focus-visible { outline: 3px solid var(--color-brand-ring); outline-offset: 3px; }
 
+/* Campo con etiqueta arriba, para filtros y formularios cortos */
+.filter-field { display: flex; flex: 1 1 240px; flex-direction: column; gap: 6px; max-width: 340px; }
+.filter-field > span { color: var(--color-text-label); font-size: var(--text-sm); font-weight: 600; }
+
+.filter-field select,
+.filter-field input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--color-border-control);
+  border-radius: var(--radius-md);
+  color: var(--color-text);
+  background: var(--color-surface);
+  font: inherit;
+  font-size: var(--text-md);
+}
+
+.filter-field select:hover,
+.filter-field input:hover { border-color: var(--color-border-hover); }
+.filter-field select:focus,
+.filter-field input:focus { border-color: var(--color-brand-soft); outline: var(--focus-ring); }
+
+.primary-button {
+  flex-shrink: 0;
+  padding: 11px 18px;
+  border: 0;
+  border-radius: var(--radius-sm);
+  color: #fff;
+  background: var(--color-brand);
+  font-size: var(--text-base);
+  font-weight: 700;
+  cursor: pointer;
+  transition: background var(--transition);
+}
+
+.primary-button:hover:not(:disabled) { background: var(--color-brand-stronger); }
+.primary-button:focus-visible { outline: 3px solid var(--color-brand-ring); outline-offset: 3px; }
+.primary-button:disabled { cursor: not-allowed; opacity: 0.55; }
+
+a.secondary-button { display: inline-block; text-decoration: none; }
+
+.back-link {
+  display: inline-block;
+  margin-bottom: var(--space-2);
+  color: var(--color-brand-muted);
+  font-size: var(--text-base);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.back-link:hover { color: var(--color-brand-strong); text-decoration: underline; }
+
 /* Mensaje de éxito o error tras una acción (RF-18) */
 .page-feedback {
   margin: 0 0 var(--space-4);
