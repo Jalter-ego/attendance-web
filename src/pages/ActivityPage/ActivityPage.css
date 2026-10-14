@@ -1,0 +1,78 @@
+.activity-filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--space-3) var(--space-4);
+  margin-bottom: var(--space-5);
+}
+
+.activity-clear { padding-block: 10px; }
+
+.activity-empty { color: var(--color-text-body); }
+
+.activity-table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  transition: opacity var(--transition);
+}
+
+.activity-table-wrap.is-loading { opacity: 0.6; }
+
+.activity-table { width: 100%; min-width: 720px; border-collapse: collapse; font-size: var(--text-base); }
+
+.activity-table th {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-text-body);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  text-align: left;
+}
+
+.activity-table td { padding: 12px 16px; border-bottom: 1px solid var(--color-border); vertical-align: top; }
+.activity-table tbody tr:last-child td { border-bottom: 0; }
+
+.activity-time { color: var(--color-text-body); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.activity-actor { display: block; font-weight: 600; }
+
+.actor-type {
+  display: inline-block;
+  margin-top: 4px;
+  padding: 1px 7px;
+  border-radius: 5px;
+  font-size: var(--text-xs);
+  font-weight: 700;
+}
+
+.actor-type--admin { color: var(--color-brand-strong); background: var(--color-surface-tint); }
+.actor-type--student { color: var(--color-upcoming); background: var(--color-upcoming-bg); }
+
+.activity-action { font-weight: 600; white-space: nowrap; }
+
+/* Las acciones que cambian datos resaltan sobre los inicios y cierres de sesión */
+.activity-action--attendance_updated { color: var(--color-pending); }
+.activity-action--module_activated,
+.activity-action--students_imported,
+.activity-action--sessions_imported { color: var(--color-brand); }
+.activity-action--login,
+.activity-action--logout { color: var(--color-text-muted); font-weight: 500; }
+
+.activity-detail { color: var(--color-text-body); overflow-wrap: anywhere; }
+
+.activity-pagination {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-top: var(--space-4);
+  color: var(--color-text-body);
+  font-size: var(--text-base);
+}
+
+.activity-pagination p { margin: 0; }
+.activity-pagination div { display: flex; align-items: center; gap: var(--space-3); }
+.activity-pagination .secondary-button { padding: 8px 14px; }
+.activity-pagination .secondary-button:disabled { cursor: not-allowed; opacity: 0.5; }

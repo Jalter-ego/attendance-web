@@ -2,6 +2,7 @@ import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router'
 import { useSession } from '../features/auth/context/useSession'
 import type { LoginCredentials } from '../features/auth/types/session'
 import AdminLayout from '../layouts/AdminLayout'
+import ActivityPage from '../pages/ActivityPage/ActivityPage'
 import AdminHomePage from '../pages/AdminHomePage/AdminHomePage'
 import AttendancesPage from '../pages/AttendancesPage/AttendancesPage'
 import LoginPage from '../pages/LoginPage/LoginPage'
@@ -79,6 +80,7 @@ function AppRouter() {
           <Route path={paths.adminAttendances} element={<AttendancesPage />} />
           <Route path={paths.adminModules} element={<ModulesPage />} />
           <Route path={paths.adminModuleDetail} element={<ModuleDetailPage />} />
+          <Route path={paths.adminActivity} element={<ActivityPage />} />
         </Route>
       </Route>
 

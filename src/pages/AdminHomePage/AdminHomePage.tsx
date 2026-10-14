@@ -3,12 +3,12 @@ import { useAdminSession } from '../../features/auth/context/useAdminSession'
 import { paths } from '../../routes/paths'
 import './AdminHomePage.css'
 
-/** Áreas del admin. Las que tienen `to` ya están construidas; el resto se anuncia */
+/** Áreas del admin. Las que no tienen `to` se anuncian como próximas */
 const areas: { title: string; text: string; to?: string }[] = [
   { title: 'Estudiantes', text: 'Consulta y busca los estudiantes del módulo activo.', to: paths.adminStudents },
   { title: 'Asistencias', text: 'Revisa y corrige los registros del módulo activo.', to: paths.adminAttendances },
   { title: 'Módulos', text: 'Importa estudiantes y fechas, y activa un nuevo módulo.', to: paths.adminModules },
-  { title: 'Actividad', text: 'Consulta el historial de acciones del módulo activo.' },
+  { title: 'Actividad', text: 'Consulta el historial de acciones del módulo activo.', to: paths.adminActivity },
 ]
 
 function AdminHomePage() {

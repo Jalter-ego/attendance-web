@@ -11,6 +11,7 @@ const sections = [
   { to: paths.adminStudents, label: 'Estudiantes', end: false },
   { to: paths.adminAttendances, label: 'Asistencias', end: false },
   { to: paths.adminModules, label: 'Módulos', end: false },
+  { to: paths.adminActivity, label: 'Actividad', end: false },
 ]
 
 /** Marco común del área del administrador: encabezado y menú entre sus vistas (F12) */
