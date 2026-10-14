@@ -1,13 +1,21 @@
 import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router'
 import { useSession } from '../features/auth/context/useSession'
 import type { LoginCredentials } from '../features/auth/types/session'
-import DashboardPage from '../pages/DashboardPage/DashboardPage'
+import AdminLayout from '../layouts/AdminLayout'
+import ActivityPage from '../pages/ActivityPage/ActivityPage'
+import AdminHomePage from '../pages/AdminHomePage/AdminHomePage'
+import AttendancesPage from '../pages/AttendancesPage/AttendancesPage'
 import LoginPage from '../pages/LoginPage/LoginPage'
+import ModuleDetailPage from '../pages/ModuleDetailPage/ModuleDetailPage'
+import ModulesPage from '../pages/ModulesPage/ModulesPage'
+import StudentAttendancePage from '../pages/StudentAttendancePage/StudentAttendancePage'
+import StudentsPage from '../pages/StudentsPage/StudentsPage'
 import ProtectedRoute from './ProtectedRoute'
 import { homeByType, paths } from './paths'
 
 /* Los envoltorios leen el contexto y pasan las props que `LoginPage` y
- * `DashboardPage` ya esperaban, así esos componentes quedan sin cambios.
+ * `StudentAttendancePage` esperan. Las páginas del admin leen la sesión con
+ * `useAdminSession` y comparten el marco de `AdminLayout`.
  */
 
 function LoginRoute() {
@@ -36,13 +44,11 @@ function LoginRoute() {
   )
 }
 
-function DashboardRoute() {
+function StudentAttendanceRoute() {
   const { state, signOut, signingOut } = useSession()
-  if (state.status !== 'authenticated') return null
+  if (state.status !== 'authenticated' || state.session.type !== 'student') return null
 
-  return (
-    <DashboardPage session={state.session} onLogout={signOut} signingOut={signingOut} />
-  )
+  return <StudentAttendancePage session={state.session} onLogout={signOut} signingOut={signingOut} />
 }
 
 /** Manda a cada quien a su área, o al login si no hay sesión */
@@ -63,12 +69,19 @@ function AppRouter() {
 
       {/* Área del estudiante (RF-03, RF-05) */}
       <Route element={<ProtectedRoute allow="student" />}>
-        <Route path={paths.studentHome} element={<DashboardRoute />} />
+        <Route path={paths.studentHome} element={<StudentAttendanceRoute />} />
       </Route>
 
       {/* Área del administrador (RF-06 … RF-13) */}
       <Route element={<ProtectedRoute allow="admin" />}>
-        <Route path={paths.adminHome} element={<DashboardRoute />} />
+        <Route element={<AdminLayout />}>
+          <Route path={paths.adminHome} element={<AdminHomePage />} />
+          <Route path={paths.adminStudents} element={<StudentsPage />} />
+          <Route path={paths.adminAttendances} element={<AttendancesPage />} />
+          <Route path={paths.adminModules} element={<ModulesPage />} />
+          <Route path={paths.adminModuleDetail} element={<ModuleDetailPage />} />
+          <Route path={paths.adminActivity} element={<ActivityPage />} />
+        </Route>
       </Route>
 
       <Route path="/" element={<RootRedirect />} />

@@ -32,17 +32,19 @@ const baseUrl = (import.meta.env?.VITE_API_URL || '/core/api/v1').replace(/\/$/,
 
 export async function apiRequest(
   path: string,
-  // PUT lo necesita la corrección de asistencias (RF-07). La importación de
-  // Excel usa multipart y no pasa por aquí: requiere FormData sin Content-Type
+  // PUT lo necesita la corrección de asistencias (RF-07)
   options: {
     method?: 'GET' | 'POST' | 'PUT'
+    /** Se envía como JSON, salvo un `FormData` (importación de Excel), que va como multipart */
     body?: unknown
     token?: string
     signal?: AbortSignal
   } = {},
 ): Promise<unknown> {
+  // Con FormData el navegador pone el Content-Type con el boundary: fijarlo a mano lo rompe
+  const multipart = options.body instanceof FormData
   const headers = new Headers({ Accept: 'application/json' })
-  if (options.body !== undefined) headers.set('Content-Type', 'application/json')
+  if (options.body !== undefined && !multipart) headers.set('Content-Type', 'application/json')
   if (options.token) headers.set('Authorization', `Bearer ${options.token}`)
 
   let response: Response
@@ -50,9 +52,10 @@ export async function apiRequest(
     response = await fetch(`${baseUrl}${path}`, {
       method: options.method || 'GET',
       headers,
-      body: options.body === undefined ? undefined : JSON.stringify(options.body),
+      body: multipart ? options.body as FormData : options.body === undefined ? undefined : JSON.stringify(options.body),
       signal: AbortSignal.any([
-        AbortSignal.timeout(12_000),
+        // Subir un archivo puede tardar más que una consulta
+        AbortSignal.timeout(multipart ? 60_000 : 12_000),
         ...(options.signal ? [options.signal] : []),
       ]),
     })

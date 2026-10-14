@@ -1,0 +1,27 @@
+.admin-nav {
+  display: flex;
+  gap: var(--space-1);
+  margin: 0 0 var(--space-6);
+  padding-top: var(--space-4);
+  overflow-x: auto;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.admin-nav-link {
+  flex-shrink: 0;
+  padding: 10px 14px;
+  border-bottom: 2px solid transparent;
+  color: var(--color-text-body);
+  font-size: var(--text-md);
+  font-weight: 600;
+  text-decoration: none;
+  transition: color var(--transition), border-color var(--transition);
+}
+
+.admin-nav-link:hover { color: var(--color-brand-strong); }
+.admin-nav-link:focus-visible { outline: 3px solid var(--color-brand-ring); outline-offset: -3px; }
+
+.admin-nav-link.active {
+  border-bottom-color: var(--color-brand);
+  color: var(--color-brand-strong);
+}

@@ -11,7 +11,13 @@ export const paths = {
   adminAttendances: '/admin/asistencias',
   adminActivity: '/admin/actividad',
   adminModules: '/admin/modulos',
+  adminModuleDetail: '/admin/modulos/:moduleId',
 } as const
+
+/** Ruta del detalle de un módulo (RF-13, RF-16) */
+export function modulePath(moduleId: string): string {
+  return paths.adminModuleDetail.replace(':moduleId', encodeURIComponent(moduleId))
+}
 
 /** A dónde va cada rol después de iniciar sesión. Las claves son `session.type` */
 export const homeByType = {
