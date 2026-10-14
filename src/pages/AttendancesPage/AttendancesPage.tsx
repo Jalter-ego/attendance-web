@@ -48,7 +48,7 @@ function AttendancesPage() {
     { label: 'Asistencias', value: total('present'), tone: 'present' },
     { label: 'Faltas', value: total('absent'), tone: 'absent' },
     { label: 'Pendientes hoy', value: total('pending'), tone: 'pending' },
-    { label: 'Por venir', value: total('upcoming'), tone: 'upcoming' },
+    { label: 'Próximas', value: total('upcoming'), tone: 'upcoming' },
   ]
 
   function choose(status: 'present' | 'absent') {
