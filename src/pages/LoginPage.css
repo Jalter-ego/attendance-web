@@ -1,0 +1,253 @@
+.login-content {
+  width: min(100%, 390px);
+  margin: auto 0;
+}
+
+.login-heading {
+  margin-bottom: 34px;
+}
+
+.login-kicker {
+  color: #53745f;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.8px;
+}
+
+.login-heading h2 {
+  margin: 13px 0 8px;
+  color: #1d2922;
+  font-size: 34px;
+  font-weight: 600;
+  letter-spacing: -1.5px;
+  line-height: 1.2;
+}
+
+.login-heading p {
+  color: #78837b;
+  font-size: 14px;
+  line-height: 1.65;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 21px;
+}
+
+.role-fieldset {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.role-fieldset legend,
+.form-field > span:first-child {
+  margin-bottom: 10px;
+  color: #344139;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.role-selector {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.role-option {
+  position: relative;
+  display: flex;
+  min-height: 72px;
+  min-width: 0;
+  align-items: flex-start;
+  padding: 15px 34px 14px 14px;
+  border: 1px solid #e1e6e2;
+  border-radius: 8px;
+  color: #26332b;
+  background: #fff;
+  text-align: left;
+  transition:
+    border-color 150ms ease,
+    background-color 150ms ease,
+    box-shadow 150ms ease,
+    transform 150ms ease;
+}
+
+.role-option:hover {
+  transform: translateY(-1px);
+  border-color: #a8b9ad;
+}
+
+.role-option:focus-visible,
+.text-button:focus-visible,
+.submit-button:focus-visible {
+  outline: 3px solid rgb(69 133 90 / 24%);
+  outline-offset: 2px;
+}
+
+.role-option.is-selected {
+  border-color: #4d795d;
+  background: #f7faf7;
+  box-shadow: 0 0 0 1px #4d795d;
+}
+
+.role-copy {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.role-label {
+  overflow: hidden;
+  color: #26332b;
+  font-size: 12px;
+  font-weight: 650;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.role-description {
+  overflow: hidden;
+  color: #7d8980;
+  font-size: 10px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.role-radio {
+  position: absolute;
+  top: 14px;
+  right: 13px;
+  width: 14px;
+  height: 14px;
+  border: 1px solid #bac5bd;
+  border-radius: 50%;
+}
+
+.role-option.is-selected .role-radio {
+  border: 4px solid #4d795d;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.input-wrap {
+  display: flex;
+  height: 48px;
+  align-items: center;
+  padding: 0 14px;
+  border: 1px solid #dfe5e0;
+  border-radius: 7px;
+  color: #26332b;
+  background: #fff;
+  transition:
+    border-color 150ms ease,
+    box-shadow 150ms ease;
+}
+
+.input-wrap:focus-within {
+  border-color: #6c997a;
+  box-shadow: 0 0 0 3px rgb(84 133 104 / 12%);
+}
+
+.input-wrap input {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  outline: 0;
+  color: #25332b;
+  background: transparent;
+  font-size: 13px;
+}
+
+.input-wrap input::placeholder {
+  color: #929d95;
+}
+
+.form-options {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: -4px;
+}
+
+.remember-option {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: #66736a;
+  font-size: 12px;
+}
+
+.remember-option input {
+  width: 14px;
+  height: 14px;
+  margin: 0;
+  accent-color: #315b40;
+}
+
+.text-button {
+  padding: 0;
+  border: 0;
+  color: #315b40;
+  background: transparent;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.text-button:hover {
+  color: #234a32;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.submit-button {
+  display: flex;
+  height: 48px;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1px;
+  border: 0;
+  border-radius: 7px;
+  color: #fff;
+  background: #234b35;
+  font-size: 13px;
+  font-weight: 600;
+  transition: background-color 150ms ease;
+}
+
+.submit-button:hover {
+  background: #1b3e2b;
+}
+
+.form-note {
+  margin: -2px 0 0;
+  color: #77837a;
+  font-size: 12px;
+  text-align: center;
+}
+
+.form-note .text-button {
+  font-size: inherit;
+}
+
+@media (max-width: 420px) {
+  .login-heading {
+    margin-bottom: 28px;
+  }
+
+  .login-heading h2 {
+    font-size: 30px;
+  }
+
+  .login-form {
+    gap: 19px;
+  }
+}
