@@ -1,17 +1,28 @@
-import LoginPage from './pages/LoginPage/LoginPage'
-import DashboardPage from './pages/DashboardPage/DashboardPage'
-import AuthLayout from './layouts/AuthLayout'
+import { BrowserRouter } from 'react-router'
+import AuthProvider from './features/auth/context/AuthProvider'
+import { useSession } from './features/auth/context/useSession'
 import { tenantFromHostname } from './features/auth/utils/tenant'
-import { useAuth } from './features/auth/hooks/use-auth'
+import AuthLayout from './layouts/AuthLayout'
+import AppRouter from './routes/AppRouter'
 
 const tenant = tenantFromHostname(window.location.hostname, import.meta.env.VITE_TENANT_BASE_DOMAIN)
 
-function App() {
-  const { state, signIn, signOut, signingOut, retry } = useAuth(tenant)
+/**
+ * `checking` y `offline` son estados de toda la aplicación, no de una ruta: se
+ * resuelven antes de entregar el control al router, que así solo ve `guest` o
+ * `authenticated`.
+ */
+function AppShell() {
+  const { state, signOut, signingOut, retry } = useSession()
 
   if (state.status === 'checking') {
-    return <AuthLayout><p role="status">Comprobando tu sesión…</p></AuthLayout>
+    return (
+      <AuthLayout>
+        <p role="status">Comprobando tu sesión…</p>
+      </AuthLayout>
+    )
   }
+
   if (state.status === 'offline') {
     return (
       <AuthLayout>
@@ -26,10 +37,18 @@ function App() {
       </AuthLayout>
     )
   }
-  if (state.status === 'authenticated') {
-    return <DashboardPage session={state.session} onLogout={signOut} signingOut={signingOut} />
-  }
-  return <LoginPage tenant={tenant} message={state.message} onLogin={signIn} />
+
+  return <AppRouter />
+}
+
+function App() {
+  return (
+    <AuthProvider tenant={tenant}>
+      <BrowserRouter>
+        <AppShell />
+      </BrowserRouter>
+    </AuthProvider>
+  )
 }
 
 export default App
