@@ -3,6 +3,7 @@ import { useSession } from '../features/auth/context/useSession'
 import type { LoginCredentials } from '../features/auth/types/session'
 import DashboardPage from '../pages/DashboardPage/DashboardPage'
 import LoginPage from '../pages/LoginPage/LoginPage'
+import StudentAttendancePage from '../pages/StudentAttendancePage/StudentAttendancePage'
 import ProtectedRoute from './ProtectedRoute'
 import { homeByType, paths } from './paths'
 
@@ -45,6 +46,13 @@ function DashboardRoute() {
   )
 }
 
+function StudentAttendanceRoute() {
+  const { state, signOut, signingOut } = useSession()
+  if (state.status !== 'authenticated' || state.session.type !== 'student') return null
+
+  return <StudentAttendancePage session={state.session} onLogout={signOut} signingOut={signingOut} />
+}
+
 /** Manda a cada quien a su área, o al login si no hay sesión */
 function RootRedirect() {
   const { state } = useSession()
@@ -63,7 +71,7 @@ function AppRouter() {
 
       {/* Área del estudiante (RF-03, RF-05) */}
       <Route element={<ProtectedRoute allow="student" />}>
-        <Route path={paths.studentHome} element={<DashboardRoute />} />
+        <Route path={paths.studentHome} element={<StudentAttendanceRoute />} />
       </Route>
 
       {/* Área del administrador (RF-06 … RF-13) */}
