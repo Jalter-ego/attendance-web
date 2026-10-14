@@ -1,75 +1,3 @@
-.student-page {
-  width: min(100%, 1100px);
-  margin: 0 auto;
-  padding: var(--space-6) 28px 64px;
-}
-
-/* Encabezado */
-.student-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-5);
-  padding-bottom: 28px;
-  border-bottom: 1px solid var(--color-border);
-}
-
-.student-brand,
-.section-kicker {
-  color: var(--color-brand-muted);
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 1.4px;
-}
-
-.student-brand { margin: 0 0 var(--space-2); }
-.student-institution { margin: 0; font-weight: 600; overflow-wrap: anywhere; }
-
-.student-header-actions { display: flex; align-items: center; gap: var(--space-5); }
-
-.student-identity {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  margin: 0;
-  text-align: right;
-  font-size: var(--text-base);
-}
-
-.student-identity span { color: var(--color-text-body); font-size: var(--text-sm); }
-
-.student-logout,
-.student-retry {
-  flex-shrink: 0;
-  padding: 11px 16px;
-  border: 1px solid var(--color-border-control);
-  border-radius: var(--radius-sm);
-  color: var(--color-brand-strong);
-  background: var(--color-surface);
-  font-size: var(--text-base);
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.student-logout:hover,
-.student-retry:hover { background: var(--color-surface-tint-hover); }
-.student-logout:disabled { cursor: wait; opacity: 0.65; }
-.student-logout:focus-visible,
-.student-retry:focus-visible { outline: 3px solid var(--color-brand-ring); outline-offset: 3px; }
-
-.student-status { margin: var(--space-7) 0; color: var(--color-text-body); }
-
-.student-error {
-  margin: var(--space-6) 0;
-  padding: 20px;
-  border: 1px solid var(--color-danger-border);
-  border-radius: var(--radius-lg);
-  color: var(--color-danger);
-  background: var(--color-danger-bg);
-}
-
-.student-error p { margin: 0 0 var(--space-4); }
-
 /* Botón de marcar, en la fila de hoy (RF-03) */
 .mark-button {
   padding: 8px 14px;
@@ -115,7 +43,6 @@
 
 /* Historial (RF-05) */
 .history { margin-top: var(--space-6); }
-.history-heading h2 { margin: 10px 0 20px; font-size: var(--text-xl); letter-spacing: -0.5px; }
 
 .summary-grid {
   display: grid;
@@ -175,9 +102,3 @@
   .summary-grid { grid-template-columns: repeat(2, 1fr); }
 }
 
-@media (max-width: 480px) {
-  .student-page { padding: var(--space-5) var(--space-4) 40px; }
-  .student-header,
-  .student-header-actions { align-items: flex-start; flex-direction: column; gap: var(--space-4); }
-  .student-identity { text-align: left; }
-}

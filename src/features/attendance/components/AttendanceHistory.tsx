@@ -33,7 +33,7 @@ function AttendanceHistory({ history, marking, feedback, onMark }: AttendanceHis
     <section className="history" aria-labelledby="history-title">
       <div className="history-heading">
         <span className="section-kicker">MI ASISTENCIA</span>
-        <h2 id="history-title">{history.module.name}</h2>
+        <h2 className="page-title" id="history-title">{history.module.name}</h2>
       </div>
 
       <dl className="summary-grid">

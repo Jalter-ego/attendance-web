@@ -1,3 +1,4 @@
+import AppHeader from '../../components/shared/AppHeader'
 import AttendanceHistory from '../../features/attendance/components/AttendanceHistory'
 import { useStudentAttendance } from '../../features/attendance/hooks/use-student-attendance'
 import type { StudentSession } from '../../features/auth/types/session'
@@ -14,29 +15,21 @@ function StudentAttendancePage({ session, onLogout, signingOut }: StudentAttenda
   const { state, marking, feedback, mark, retry } = useStudentAttendance(session.accessToken)
 
   return (
-    <main className="student-page">
-      <header className="student-header">
-        <div>
-          <p className="student-brand">CONTROL DE ASISTENCIA</p>
-          <p className="student-institution">{session.tenant.name}</p>
-        </div>
-        <div className="student-header-actions">
-          <p className="student-identity">
-            <strong>{session.student.fullName}</strong>
-            <span>Registro {session.student.registrationNumber}</span>
-          </p>
-          <button className="student-logout" type="button" onClick={() => void onLogout()} disabled={signingOut}>
-            {signingOut ? 'Cerrando sesión…' : 'Cerrar sesión'}
-          </button>
-        </div>
-      </header>
+    <main className="page">
+      <AppHeader
+        institution={session.tenant.name}
+        userName={session.student.fullName}
+        userDetail={`Registro ${session.student.registrationNumber}`}
+        onLogout={onLogout}
+        signingOut={signingOut}
+      />
 
-      {state.status === 'loading' && <p className="student-status" role="status">Cargando tu asistencia…</p>}
+      {state.status === 'loading' && <p className="page-status" role="status">Cargando tu asistencia…</p>}
 
       {state.status === 'error' && (
-        <div className="student-error" role="alert">
+        <div className="page-error" role="alert">
           <p>{state.message}</p>
-          <button className="student-retry" type="button" onClick={retry}>Volver a intentar</button>
+          <button className="secondary-button" type="button" onClick={retry}>Volver a intentar</button>
         </div>
       )}
 

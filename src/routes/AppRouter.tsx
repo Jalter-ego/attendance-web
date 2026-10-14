@@ -1,14 +1,17 @@
 import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router'
 import { useSession } from '../features/auth/context/useSession'
 import type { LoginCredentials } from '../features/auth/types/session'
-import DashboardPage from '../pages/DashboardPage/DashboardPage'
+import AdminLayout from '../layouts/AdminLayout'
+import AdminHomePage from '../pages/AdminHomePage/AdminHomePage'
 import LoginPage from '../pages/LoginPage/LoginPage'
 import StudentAttendancePage from '../pages/StudentAttendancePage/StudentAttendancePage'
+import StudentsPage from '../pages/StudentsPage/StudentsPage'
 import ProtectedRoute from './ProtectedRoute'
 import { homeByType, paths } from './paths'
 
 /* Los envoltorios leen el contexto y pasan las props que `LoginPage` y
- * `DashboardPage` ya esperaban, así esos componentes quedan sin cambios.
+ * `StudentAttendancePage` esperan. Las páginas del admin leen la sesión con
+ * `useAdminSession` y comparten el marco de `AdminLayout`.
  */
 
 function LoginRoute() {
@@ -34,15 +37,6 @@ function LoginRoute() {
       message={state.status === 'guest' ? state.message : undefined}
       onLogin={handleLogin}
     />
-  )
-}
-
-function DashboardRoute() {
-  const { state, signOut, signingOut } = useSession()
-  if (state.status !== 'authenticated') return null
-
-  return (
-    <DashboardPage session={state.session} onLogout={signOut} signingOut={signingOut} />
   )
 }
 
@@ -76,7 +70,10 @@ function AppRouter() {
 
       {/* Área del administrador (RF-06 … RF-13) */}
       <Route element={<ProtectedRoute allow="admin" />}>
-        <Route path={paths.adminHome} element={<DashboardRoute />} />
+        <Route element={<AdminLayout />}>
+          <Route path={paths.adminHome} element={<AdminHomePage />} />
+          <Route path={paths.adminStudents} element={<StudentsPage />} />
+        </Route>
       </Route>
 
       <Route path="/" element={<RootRedirect />} />
