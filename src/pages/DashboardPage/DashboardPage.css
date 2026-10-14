@@ -1,0 +1,60 @@
+.dashboard {
+  width: min(100%, 1100px);
+  margin: 0 auto;
+  padding: 32px 28px 64px;
+}
+
+.dashboard-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid #dfe5e0;
+}
+
+.dashboard-brand,
+.dashboard-role {
+  color: #53745f;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.4px;
+}
+
+.dashboard-brand { margin: 0 0 8px; }
+.dashboard-institution { margin: 0; font-weight: 600; overflow-wrap: anywhere; }
+
+.logout-button {
+  flex-shrink: 0;
+  padding: 11px 16px;
+  border: 1px solid #c9d6cd;
+  border-radius: 7px;
+  color: #234b35;
+  background: #fff;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.logout-button:hover { background: #eaf0eb; }
+.logout-button:disabled { cursor: wait; opacity: 0.65; }
+.logout-button:focus-visible { outline: 3px solid #6c997a; outline-offset: 3px; }
+
+.dashboard-welcome { padding: 48px 0 32px; }
+.dashboard-welcome h1 { margin: 14px 0; font-size: clamp(26px, 4vw, 38px); letter-spacing: -1px; }
+.dashboard-welcome > p { color: #66736a; line-height: 1.7; overflow-wrap: anywhere; }
+
+.profile-details { display: flex; flex-wrap: wrap; gap: 24px 56px; margin: 28px 0 0; }
+.profile-details dt { margin-bottom: 7px; color: #66736a; font-size: 12px; }
+.profile-details dd { margin: 0; font-size: 14px; font-weight: 600; overflow-wrap: anywhere; }
+
+.dashboard-areas { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr)); gap: 18px; }
+.dashboard-card { padding: 26px; border: 1px solid #dfe5e0; border-radius: 12px; background: #fff; }
+.upcoming-label { padding: 4px 8px; border-radius: 5px; color: #53745f; background: #edf3ee; font-size: 10px; }
+.dashboard-card h2 { margin: 20px 0 10px; font-size: 18px; }
+.dashboard-card p { margin: 0; color: #66736a; font-size: 14px; line-height: 1.7; }
+
+@media (max-width: 480px) {
+  .dashboard { padding: 24px 20px 40px; }
+  .dashboard-header { align-items: flex-start; flex-direction: column; gap: 16px; }
+  .dashboard-welcome { padding-top: 32px; }
+}

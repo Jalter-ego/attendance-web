@@ -2,32 +2,82 @@ import type { FormEvent } from 'react'
 import { useState } from 'react'
 import RoleSelector from './RoleSelector'
 import type { UserRole } from '../types/user-role'
+import type { LoginCredentials } from '../types/session'
+import { isTenantSlug } from '../utils/tenant'
 
-function LoginForm() {
+type LoginFormProps = {
+  tenant: string | null
+  message?: string
+  onLogin: (credentials: LoginCredentials, persistent: boolean) => Promise<void>
+}
+
+function LoginForm({ tenant, message, onLogin }: LoginFormProps) {
   const [selectedRole, setSelectedRole] = useState<UserRole>('student')
+  const [error, setError] = useState('')
+  const [submitting, setSubmitting] = useState(false)
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
+    if (submitting) return
+    const form = new FormData(event.currentTarget)
+    const slug = (tenant || String(form.get('tenant') || '')).trim().toLowerCase()
+    if (!isTenantSlug(slug)) {
+      setError('Ingresa el identificador de tu institución, usando letras, números o guiones.')
+      return
+    }
+    const identifier = String(form.get('identifier') || '').trim()
+    setError('')
+    setSubmitting(true)
+    try {
+      await onLogin(selectedRole === 'admin'
+        ? { type: 'admin', tenant: slug, email: identifier, password: String(form.get('password') || '') }
+        : { type: 'student', tenant: slug, identifier }, form.get('remember') === 'on')
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : 'No pudimos iniciar sesión. Inténtalo de nuevo.')
+    } finally {
+      setSubmitting(false)
+    }
   }
 
   return (
-    <form className="login-form" onSubmit={handleSubmit}>
-      <fieldset className="role-fieldset">
+    <form className="login-form" onSubmit={handleSubmit} aria-busy={submitting}>
+      {(error || message) && <p className="form-feedback" role="alert">{error || message}</p>}
+      {tenant ? (
+        <p className="tenant-note">Institución: <strong>{tenant}</strong></p>
+      ) : (
+        <label className="form-field">
+          <span>Institución</span>
+          <span className="input-wrap">
+            <input
+              autoComplete="organization"
+              defaultValue={import.meta.env.VITE_DEFAULT_TENANT || ''}
+              name="tenant"
+              placeholder="Identificador de tu institución, p. ej. demo"
+              required
+              disabled={submitting}
+              maxLength={60}
+            />
+          </span>
+        </label>
+      )}
+      <fieldset className="role-fieldset" disabled={submitting}>
         <legend>Ingresa como</legend>
         <RoleSelector
           selectedRole={selectedRole}
-          onRoleChange={setSelectedRole}
+          onRoleChange={(role) => { setSelectedRole(role); setError('') }}
         />
       </fieldset>
 
       <label className="form-field">
-        <span>Correo electrónico</span>
+        <span>{selectedRole === 'admin' ? 'Correo electrónico' : 'Correo electrónico o número de registro'}</span>
         <span className="input-wrap">
           <input
-            autoComplete="email"
-            name="email"
-            placeholder="nombre@institucion.edu"
-            type="email"
+            autoComplete="username"
+            name="identifier"
+            placeholder={selectedRole === 'admin' ? 'nombre@institucion.edu' : 'nombre@institucion.edu o 1001'}
+            type={selectedRole === 'admin' ? 'email' : 'text'}
+            required
+            disabled={submitting}
           />
         </span>
       </label>
@@ -41,32 +91,26 @@ function LoginForm() {
                 name="password"
               placeholder="Ingresa tu contraseña"
               type="password"
+              required
+              disabled={submitting}
             />
           </span>
         </label>
       )}
 
-      {selectedRole === 'admin' && (
         <div className="form-options">
           <label className="remember-option">
-            <input name="remember" type="checkbox" />
-            <span>Recordarme</span>
+            <input name="remember" type="checkbox" defaultChecked disabled={submitting} />
+            <span>Mantener sesión en este dispositivo</span>
           </label>
-          <button className="text-button" type="button">
-            ¿Olvidaste tu contraseña?
-          </button>
         </div>
-      )}
 
-      <button className="submit-button" type="submit">
-        Iniciar sesión
+      <button className="submit-button" type="submit" disabled={submitting}>
+        {submitting ? 'Ingresando…' : 'Iniciar sesión'}
       </button>
 
       <p className="form-note">
-        ¿Necesitas ayuda?{' '}
-        <button className="text-button" type="button">
-          Contacta a soporte
-        </button>
+        ¿Necesitas ayuda? Contacta al administrador de tu institución.
       </p>
     </form>
   )

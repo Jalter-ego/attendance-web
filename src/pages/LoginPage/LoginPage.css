@@ -238,6 +238,32 @@
   font-size: inherit;
 }
 
+.form-feedback {
+  margin: 0;
+  padding: 12px 14px;
+  border: 1px solid #e5c4ba;
+  border-radius: 7px;
+  color: #813c2b;
+  background: #fff7f3;
+  font-size: 13px;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+.tenant-note {
+  margin: 0;
+  color: #53745f;
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+
+.submit-button:disabled,
+.role-fieldset:disabled .role-option,
+.input-wrap input:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+
 @media (max-width: 420px) {
   .login-heading {
     margin-bottom: 28px;
