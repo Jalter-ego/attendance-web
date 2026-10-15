@@ -4,12 +4,12 @@
   gap: var(--space-3);
   padding: var(--space-5);
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-md);
   background: var(--color-surface);
 }
 
 .import-card-header { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); }
-.import-card-header h3 { margin: 0; font-size: var(--text-lg); }
+.import-card-header h3 { margin: 0; font-size: var(--text-md); }
 
 .import-count {
   padding: 3px 10px;
@@ -30,26 +30,35 @@
   border-radius: 4px;
   color: var(--color-text-strong);
   background: var(--color-surface-tint);
+  font-family: inherit;
   font-size: var(--text-sm);
+  font-weight: 600;
+  white-space: nowrap;
 }
 
 .import-form { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3); }
-.import-form input[type='file'] { flex: 1 1 200px; min-width: 0; font-size: var(--text-base); }
 
-.import-button {
-  padding: 10px 16px;
-  border: 0;
+.import-form input[type='file'] {
+  flex: 1 1 200px;
+  min-width: 0;
+  color: var(--color-text-body);
+  font-size: var(--text-sm);
+}
+
+.import-form input[type='file']::file-selector-button {
+  margin-right: var(--space-3);
+  padding: 8px 12px;
+  border: 1px solid var(--color-border-control);
   border-radius: var(--radius-sm);
-  color: #fff;
-  background: var(--color-brand);
-  font-size: var(--text-base);
-  font-weight: 700;
+  color: var(--color-brand-strong);
+  background: var(--color-surface);
+  font: inherit;
+  font-weight: 600;
   cursor: pointer;
 }
 
-.import-button:hover:not(:disabled) { background: var(--color-brand-stronger); }
-.import-button:focus-visible { outline: 3px solid var(--color-brand-ring); outline-offset: 3px; }
-.import-button:disabled { cursor: not-allowed; opacity: 0.55; }
+.import-form input[type='file']::file-selector-button:hover { background: var(--color-surface-tint-hover); }
+.import-form input[type='file']:focus-visible { outline: var(--focus-ring); outline-offset: 2px; }
 
 .import-card .page-feedback { margin: 0; }
 

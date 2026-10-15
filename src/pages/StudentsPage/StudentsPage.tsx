@@ -1,3 +1,4 @@
+import { Search } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router'
 import { useAdminSession } from '../../features/auth/context/useAdminSession'
@@ -25,13 +26,12 @@ function StudentsPage() {
   }, [text, search, setSearchParams])
 
   return (
-    <section aria-labelledby="students-title">
-      <span className="section-kicker">ESTUDIANTES</span>
-      <h1 className="page-title" id="students-title">{data ? data.module.name : 'Módulo activo'}</h1>
+    <section aria-label="Estudiantes del módulo activo">
 
       <div className="students-toolbar">
-        <label className="students-search">
+        <label className="students-search search-field">
           <span className="visually-hidden">Buscar estudiante</span>
+          <Search size={15} aria-hidden="true" />
           <input
             type="search"
             value={text}
@@ -41,7 +41,7 @@ function StudentsPage() {
           />
         </label>
         {data && (
-          <p className="students-count" aria-live="polite">
+          <p className="ledger-count" aria-live="polite">
             {data.total === 1 ? '1 estudiante' : `${data.total} estudiantes`}
             {search && ' encontrados'}
           </p>
@@ -60,8 +60,8 @@ function StudentsPage() {
           {search ? `Ningún estudiante coincide con «${search}».` : 'El módulo activo no tiene estudiantes.'}
         </p>
       ) : (
-        <div className={`students-table-wrap${loading ? ' is-loading' : ''}`} aria-busy={loading}>
-          <table className="students-table">
+        <div className={`ledger-wrap${loading ? ' is-loading' : ''}`} aria-busy={loading}>
+          <table className="ledger students-table">
             <thead>
               <tr>
                 <th scope="col">Registro</th>
@@ -73,7 +73,7 @@ function StudentsPage() {
               {data.students.map((student) => (
                 <tr key={student.id}>
                   <td className="students-registration">{student.registrationNumber}</td>
-                  <td>{student.fullName}</td>
+                  <td className="students-name">{student.fullName}</td>
                   <td className="students-email">{student.email}</td>
                 </tr>
               ))}

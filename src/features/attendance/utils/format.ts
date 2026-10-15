@@ -18,17 +18,14 @@ export function formatClassDate(classDate: string): string {
   return text.charAt(0).toUpperCase() + text.slice(1)
 }
 
-const shortDateFormat = new Intl.DateTimeFormat('es', {
-  weekday: 'short',
-  day: '2-digit',
-  month: '2-digit',
-  timeZone: 'UTC',
-})
+const weekdayFormat = new Intl.DateTimeFormat('es', { weekday: 'short', timeZone: 'UTC' })
+const dayMonthFormat = new Intl.DateTimeFormat('es', { day: '2-digit', month: '2-digit', timeZone: 'UTC' })
 
-/** Versión corta para encabezados de columna, p. ej. "mar, 14/10" */
-export function formatShortDate(classDate: string): string {
+/** Encabezado de columna en dos líneas, p. ej. { weekday: "mar", day: "14/10" } */
+export function formatColumnDate(classDate: string): { weekday: string; day: string } {
   const [year, month, day] = classDate.split('-').map(Number)
-  return shortDateFormat.format(new Date(Date.UTC(year, month - 1, day)))
+  const date = new Date(Date.UTC(year, month - 1, day))
+  return { weekday: weekdayFormat.format(date).replace('.', ''), day: dayMonthFormat.format(date) }
 }
 
 export function formatMarkedAt(markedAt: string): string {
@@ -41,3 +38,4 @@ export const statusLabel: Record<SessionStatus, string> = {
   pending: 'Pendiente',
   upcoming: 'Próxima',
 }
+

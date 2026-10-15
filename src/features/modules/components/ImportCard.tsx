@@ -1,3 +1,4 @@
+import { Upload } from 'lucide-react'
 import { useId, useState, type FormEvent } from 'react'
 import { ApiError, type ImportErrorRow } from '../../../lib/api'
 import './ImportCard.css'
@@ -73,7 +74,8 @@ function ImportCard({ title, columns, note, loaded, loadedLabel, onUpload }: Imp
           onChange={(event) => { setFile(event.target.files?.[0] ?? null); setResult(null) }}
           disabled={uploading}
         />
-        <button className="import-button" type="submit" disabled={!file || uploading}>
+        <button className="primary-button" type="submit" disabled={!file || uploading}>
+          <Upload size={15} strokeWidth={2.2} aria-hidden="true" />
           {uploading ? 'Importando…' : loaded > 0 ? 'Reemplazar' : 'Importar'}
         </button>
       </form>
