@@ -33,8 +33,7 @@ function ActivityPage() {
 
   return (
     <section aria-labelledby="activity-title">
-      <span className="section-kicker">ACTIVIDAD</span>
-      <h1 className="page-title" id="activity-title">Historial de actividades</h1>
+      <h2 className="page-title" id="activity-title">Historial de actividades</h2>
 
       <div className="activity-filters">
         <label className="filter-field">

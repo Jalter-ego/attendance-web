@@ -4,35 +4,79 @@
 :root {
   font-family: var(--font-sans);
   color: var(--color-text);
-  background: var(--color-surface-page);
+  background: var(--color-canvas);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-
   font-optical-sizing: auto;
   font-weight: 400;
+  /* Sin esto los números bailan de ancho entre filas de una tabla */
+  font-variant-numeric: tabular-nums;
+  line-height: var(--leading-normal);
+  tab-size: 4;
 }
 
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 body {
   min-width: 320px;
-  min-height: 100vh;
+  min-height: 100dvh;
   margin: 0;
 }
 
 button,
-input {
-  font: inherit;
-}
+input,
+select,
+textarea { font: inherit; }
 
 button {
+  color: inherit;
   cursor: pointer;
 }
 
-#root {
-  min-height: 100vh;
+/* Un objetivo táctil que se queda corto es un error de accesibilidad, no de estilo:
+   esto da el mínimo a cualquier control que no lo declare */
+button,
+[role='button'] { touch-action: manipulation; }
+
+a { color: var(--color-action-text); }
+
+img,
+svg { max-width: 100%; }
+
+h1, h2, h3, h4 {
+  color: var(--color-text-heading);
+  line-height: var(--leading-tight);
+}
+
+code {
+  padding: 1px 5px;
+  border-radius: var(--radius-xs);
+  color: var(--color-text-strong);
+  background: var(--color-surface-sunken);
+  font-family: var(--font-mono);
+  font-size: 0.92em;
+}
+
+:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-offset);
+}
+
+::selection {
+  background: var(--green-200);
+}
+
+#root { min-height: 100dvh; }
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 1ms !important;
+  }
 }

@@ -46,8 +46,7 @@ function ModulesPage() {
 
   return (
     <section aria-labelledby="modules-title">
-      <span className="section-kicker">MÓDULOS</span>
-      <h1 className="page-title" id="modules-title">Módulos</h1>
+      <h2 className="page-title" id="modules-title">Módulos</h2>
 
       <form className="module-create" onSubmit={(event) => void handleCreate(event)}>
         <div className="module-create-text">

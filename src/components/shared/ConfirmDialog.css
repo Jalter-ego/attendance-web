@@ -1,19 +1,36 @@
 .confirm-dialog {
-  width: min(calc(100% - 32px), 440px);
+  width: min(calc(100% - 32px), 460px);
   padding: var(--space-5);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-xl);
   color: var(--color-text);
   background: var(--color-surface);
-  box-shadow: 0 20px 48px rgb(24 35 32 / 18%);
+  box-shadow: var(--shadow-4);
 }
 
-.confirm-dialog::backdrop { background: rgb(24 35 32 / 35%); }
+/* Velo marcado y con desenfoque: aísla el diálogo y señala que el fondo
+   está inactivo, en lugar de ser decorativo */
+.confirm-dialog::backdrop {
+  background: rgb(18 40 28 / 52%);
+  backdrop-filter: blur(2px);
+}
 
-.confirm-dialog h2 { margin: 0 0 var(--space-3); font-size: var(--text-lg); }
+.confirm-dialog h2 {
+  margin: 0 0 var(--space-3);
+  font-size: var(--text-lg);
+  font-weight: 650;
+  letter-spacing: -0.2px;
+}
 
-.confirm-dialog-body { color: var(--color-text-body); font-size: var(--text-md); line-height: 1.6; }
+.confirm-dialog-body {
+  color: var(--color-text-body);
+  font-size: var(--text-md);
+  line-height: var(--leading-relaxed);
+}
+
 .confirm-dialog-body p { margin: 0 0 var(--space-2); }
+.confirm-dialog-body p:last-child { margin-bottom: 0; }
+.confirm-dialog-body strong { color: var(--color-text-strong); }
 
 .confirm-dialog-actions {
   display: flex;
@@ -21,20 +38,70 @@
   justify-content: flex-end;
   gap: var(--space-2);
   margin-top: var(--space-5);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-line-subtle);
 }
 
 .confirm-dialog-action {
-  padding: 11px 16px;
-  border: 0;
-  border-radius: var(--radius-sm);
+  min-height: 40px;
+  padding: 0 var(--space-4);
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
   color: #fff;
   font-size: var(--text-base);
-  font-weight: 700;
-  cursor: pointer;
+  font-weight: 650;
+  transition: background-color var(--transition);
 }
 
-.confirm-dialog-action:focus-visible { outline: 3px solid var(--color-brand-ring); outline-offset: 3px; }
-.confirm-dialog-action--primary { background: var(--color-brand); }
-.confirm-dialog-action--primary:hover { background: var(--color-brand-stronger); }
-.confirm-dialog-action--danger { background: var(--color-danger); }
-.confirm-dialog-action--danger:hover { filter: brightness(0.9); }
+.confirm-dialog-action:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-offset);
+}
+
+.confirm-dialog-action--primary {
+  border-color: var(--color-action);
+  background: var(--color-action);
+}
+
+.confirm-dialog-action--primary:hover { background: var(--color-action-hover); }
+
+/* Acción destructiva en color semántico y separada de las demás */
+.confirm-dialog-action--danger {
+  border-color: var(--color-absent);
+  background: var(--color-absent);
+}
+
+.confirm-dialog-action--danger:hover { background: var(--color-absent-hover); }
+
+/* Cancelar queda visualmente subordinado, a la izquierda del grupo */
+.confirm-dialog-cancel {
+  order: -1;
+  margin-right: auto;
+  border: 1px solid var(--color-line-strong);
+  color: var(--color-text-label);
+  background: var(--color-surface);
+}
+
+.confirm-dialog-cancel:hover { background: var(--color-surface-sunken); }
+
+/* Entrada: escala leve + desplazamiento, no una aparición seca */
+@media (prefers-reduced-motion: no-preference) {
+  .confirm-dialog[open] {
+    animation: dialog-in var(--duration-slow) var(--ease-out);
+  }
+
+  .confirm-dialog[open]::backdrop {
+    animation: backdrop-in var(--duration-slow) var(--ease-out);
+  }
+}
+
+@keyframes dialog-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.97);
+  }
+}
+
+@keyframes backdrop-in {
+  from { opacity: 0; }
+}

@@ -1,0 +1,141 @@
+.topbar {
+  position: sticky;
+  z-index: var(--z-topbar);
+  top: 0;
+  display: flex;
+  min-height: var(--topbar-height);
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3) var(--space-4);
+  padding: var(--space-3) var(--space-6);
+  border-bottom: 1px solid var(--color-line);
+  /* Semitransparente con blur: al hacer scroll el contenido se insinúa debajo */
+  background: rgb(255 255 255 / 86%);
+  backdrop-filter: blur(10px);
+}
+
+.topbar-burger {
+  display: none;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  place-items: center;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-md);
+  color: var(--color-text-label);
+  background: var(--color-surface);
+}
+
+.topbar-burger:hover { background: var(--color-surface-sunken); }
+.topbar-burger:focus-visible { outline: var(--focus-ring); outline-offset: var(--focus-offset); }
+
+.topbar-context {
+  min-width: 0;
+  flex: 1;
+}
+
+.topbar-context h1 {
+  margin: 0;
+  overflow: hidden;
+  color: var(--color-text-heading);
+  font-size: var(--text-lg);
+  font-weight: 650;
+  letter-spacing: -0.3px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.topbar-context p {
+  margin: 2px 0 0;
+  overflow: hidden;
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ── Usuario ───────────────────────────────────────────────────────────── */
+.topbar-user {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.topbar-avatar {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  place-items: center;
+  border-radius: var(--radius-pill);
+  color: var(--green-700);
+  background: var(--green-100);
+  font-size: var(--text-sm);
+  font-weight: 650;
+  letter-spacing: 0.3px;
+}
+
+.topbar-identity {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  line-height: var(--leading-tight);
+}
+
+.topbar-identity strong {
+  overflow: hidden;
+  color: var(--color-text-strong);
+  font-size: var(--text-base);
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.topbar-identity span {
+  color: var(--color-text-muted);
+  font-size: var(--text-xs);
+}
+
+.topbar-logout {
+  display: flex;
+  min-height: 36px;
+  align-items: center;
+  gap: 6px;
+  padding: 0 var(--space-3);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-md);
+  color: var(--color-text-label);
+  background: var(--color-surface);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  transition:
+    border-color var(--transition),
+    background-color var(--transition),
+    color var(--transition);
+}
+
+.topbar-logout:hover:not(:disabled) {
+  border-color: var(--color-danger-line);
+  color: var(--color-danger);
+  background: var(--color-danger-bg);
+}
+
+.topbar-logout:focus-visible { outline: var(--focus-ring); outline-offset: var(--focus-offset); }
+.topbar-logout:disabled { cursor: not-allowed; opacity: 0.55; }
+
+@media (max-width: 960px) {
+  .topbar { padding: var(--space-3) var(--space-4); }
+  .topbar-burger { display: grid; }
+}
+
+@media (max-width: 600px) {
+  /* El nombre queda en el avatar; el detalle de rol se puede soltar */
+  .topbar-identity { display: none; }
+  .topbar-logout span { display: none; }
+  .topbar-logout { width: 36px; justify-content: center; padding: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .topbar-logout,
+  .topbar-burger { transition-duration: 1ms; }
+}

@@ -35,7 +35,9 @@ function ConfirmDialog({ open, title, children, actions, onCancel }: ConfirmDial
       <h2 id="confirm-dialog-title">{title}</h2>
       <div className="confirm-dialog-body">{children}</div>
       <div className="confirm-dialog-actions">
-        <button className="secondary-button" type="button" onClick={onCancel}>Cancelar</button>
+        <button className="confirm-dialog-action confirm-dialog-cancel" type="button" onClick={onCancel}>
+          Cancelar
+        </button>
         {actions.map((action) => (
           <button
             key={action.label}

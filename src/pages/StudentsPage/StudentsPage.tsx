@@ -26,8 +26,7 @@ function StudentsPage() {
 
   return (
     <section aria-labelledby="students-title">
-      <span className="section-kicker">ESTUDIANTES</span>
-      <h1 className="page-title" id="students-title">{data ? data.module.name : 'Módulo activo'}</h1>
+      <h2 className="page-title" id="students-title">{data ? data.module.name : 'Módulo activo'}</h2>
 
       <div className="students-toolbar">
         <label className="students-search">

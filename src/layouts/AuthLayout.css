@@ -1,19 +1,116 @@
 .auth-layout {
-  display: flex;
-  min-height: 100vh;
-  justify-content: center;
-  padding: 48px 24px;
-  background: #fff;
+  display: grid;
+  min-height: 100dvh;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  background: var(--color-surface);
 }
 
+/* ── Panel de marca ────────────────────────────────────────────────────── */
+.auth-brand {
+  position: relative;
+  display: flex;
+  overflow: hidden;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: var(--space-7) var(--space-7) var(--space-6);
+  color: var(--green-100);
+  background:
+    radial-gradient(900px 480px at 12% 8%, rgb(116 163 134 / 28%), transparent 60%),
+    linear-gradient(160deg, var(--green-800) 0%, var(--green-900) 100%);
+}
+
+.auth-brand-top {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.auth-brand-mark {
+  display: grid;
+  width: 32px;
+  height: 32px;
+  place-items: center;
+  border-radius: var(--radius-md);
+  color: var(--green-900);
+  background: var(--green-300);
+}
+
+.auth-brand-name {
+  color: #fff;
+  font-size: var(--text-md);
+  font-weight: 650;
+  letter-spacing: -0.2px;
+}
+
+.auth-brand-body { max-width: 30rem; }
+
+.auth-brand-body h2 {
+  margin: 0 0 var(--space-6);
+  color: #fff;
+  font-size: var(--text-3xl);
+  font-weight: 650;
+  letter-spacing: -1.1px;
+  line-height: var(--leading-tight);
+}
+
+.auth-brand-body ul {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.auth-brand-body li {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  color: var(--green-200);
+  font-size: var(--text-md);
+  line-height: var(--leading-normal);
+}
+
+.auth-brand-body li strong {
+  display: block;
+  margin-bottom: 2px;
+  color: #fff;
+  font-weight: 600;
+}
+
+.auth-brand-icon {
+  display: grid;
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+  place-items: center;
+  border: 1px solid rgb(255 255 255 / 16%);
+  border-radius: var(--radius-sm);
+  color: var(--green-300);
+  background: rgb(255 255 255 / 8%);
+}
+
+.auth-brand-foot {
+  max-width: 34rem;
+  margin: 0;
+  padding-top: var(--space-5);
+  border-top: 1px solid rgb(255 255 255 / 12%);
+  color: var(--green-400);
+  font-size: var(--text-sm);
+  line-height: var(--leading-normal);
+}
+
+/* ── Panel del formulario ──────────────────────────────────────────────── */
 .auth-panel {
   display: flex;
-  width: min(100%, 390px);
   align-items: center;
+  justify-content: center;
+  padding: var(--space-7) var(--space-5);
 }
 
-@media (max-width: 480px) {
-  .auth-layout {
-    padding: 32px 20px;
-  }
+@media (max-width: 900px) {
+  /* En pantalla angosta solo el formulario: el panel de marca no aporta */
+  .auth-layout { grid-template-columns: 1fr; }
+  .auth-brand { display: none; }
+  .auth-panel { padding: var(--space-6) var(--space-4); }
 }

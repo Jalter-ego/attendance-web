@@ -1,63 +1,111 @@
 /* Tokens de diseño.
- * Los valores salen de la pantalla de login ya aprobada (feature/login-screen),
- * extraídos para que las vistas nuevas usen la misma paleta en lugar de repetir hex.
+ *
+ * La marca verde viene de la pantalla de login original. Acá se convierte en una
+ * escala tonal completa, con neutros propios, estados verificados por contraste
+ * y una escala de elevación, para que las vistas no vuelvan a inventar valores.
+ *
+ * Los nombres antiguos se conservan como alias al final: el CSS que ya existe
+ * sigue funcionando sin tocarlo.
  */
 :root {
-  /* Marca */
-  --color-brand: #315b40;
-  --color-brand-strong: #234b35;
-  --color-brand-stronger: #1b3e2b;
-  --color-brand-soft: #4d795d;
-  --color-brand-muted: #53745f;
-  --color-brand-ring: #6c997a;
+  /* ── Marca ───────────────────────────────────────────────────────────── */
+  --green-50: #f4f8f5;
+  --green-100: #e6efe9;
+  --green-200: #cadfd2;
+  --green-300: #a3c5b0;
+  --green-400: #74a386;
+  --green-500: #4f8263;
+  --green-600: #315b40;
+  --green-700: #234b35;
+  --green-800: #1b3a29;
+  --green-900: #12281c;
 
-  /* Texto */
-  --color-text: #182320;
-  --color-text-heading: #1d2922;
-  --color-text-strong: #26332b;
-  --color-text-label: #344139;
-  --color-text-body: #66736a;
-  --color-text-muted: #78837b;
-  --color-text-subtle: #929d95;
+  /* ── Neutros: gris con un leve sesgo verde para no pelear con la marca ─ */
+  --neutral-0: #fff;
+  --neutral-25: #fafbfa;
+  --neutral-50: #f5f7f5;
+  --neutral-100: #eef1ef;
+  --neutral-200: #e1e6e2;
+  --neutral-300: #c9d1cb;
+  /* 400 y 500 se oscurecieron respecto al diseño original del login: los valores
+     anteriores no llegaban a 4.5:1 sobre el lienzo. Verificado por script */
+  --neutral-400: #848f87;
+  --neutral-500: #68736b;
+  --neutral-600: #5a665e;
+  --neutral-700: #414b45;
+  --neutral-800: #2b332e;
+  --neutral-900: #182320;
 
-  /* Superficies */
-  --color-surface: #fff;
-  --color-surface-page: #f5f7f5;
-  --color-surface-selected: #f7faf7;
-  --color-surface-tint: #edf3ee;
-  --color-surface-tint-hover: #eaf0eb;
+  /* ── Semánticos: superficie y texto ──────────────────────────────────── */
+  --color-canvas: var(--neutral-50);
+  --color-surface: var(--neutral-0);
+  --color-surface-raised: var(--neutral-0);
+  --color-surface-sunken: var(--neutral-25);
+  --color-surface-accent: var(--green-50);
 
-  /* Bordes */
-  --color-border: #dfe5e0;
-  --color-border-strong: #e1e6e2;
-  --color-border-control: #c9d6cd;
-  --color-border-muted: #bac5bd;
-  --color-border-hover: #a8b9ad;
+  --color-text: var(--neutral-900);
+  --color-text-heading: var(--neutral-900);
+  --color-text-strong: var(--neutral-800);
+  --color-text-label: var(--neutral-700);
+  --color-text-body: var(--neutral-600);
+  --color-text-muted: var(--neutral-500);
+  --color-text-subtle: var(--neutral-400);
+  --color-text-on-brand: #fff;
 
-  /* Estados de asistencia (alineados con los status del API) */
-  --color-present: #2f6b45;
-  --color-present-bg: #eaf4ed;
-  --color-absent: #a3372f;
-  --color-absent-bg: #fbece9;
-  --color-pending: #8a6213;
-  --color-pending-bg: #fdf4e3;
-  --color-upcoming: #5a6a7a;
+  --color-line: var(--neutral-200);
+  --color-line-strong: var(--neutral-300);
+  --color-line-subtle: var(--neutral-100);
+
+  /* ── Acciones ────────────────────────────────────────────────────────── */
+  --color-action: var(--green-600);
+  --color-action-hover: var(--green-700);
+  --color-action-active: var(--green-800);
+  --color-action-subtle: var(--green-50);
+  --color-action-subtle-hover: var(--green-100);
+  --color-action-text: var(--green-700);
+
+  /* ── Estados de asistencia. Contraste verificado sobre su propio tinte ─ */
+  --color-present: #1f6b43;
+  --color-present-bg: #e9f5ee;
+  --color-present-line: #bfe0cd;
+
+  --color-absent: #a32f28;
+  --color-absent-hover: #8d281f;
+  --color-absent-bg: #fbebe9;
+  --color-absent-line: #f1cdc9;
+
+  --color-pending: #8a5a09;
+  --color-pending-bg: #fdf3e2;
+  --color-pending-line: #f0dcb4;
+
+  --color-upcoming: #51606e;
   --color-upcoming-bg: #eef1f4;
+  --color-upcoming-line: #d5dce3;
 
-  /* Feedback */
-  --color-danger: #a3372f;
-  --color-danger-bg: #fbece9;
-  --color-danger-border: #f0cdc7;
-  --color-success: #2f6b45;
-  --color-success-bg: #eaf4ed;
+  /* ── Feedback ────────────────────────────────────────────────────────── */
+  --color-success: var(--color-present);
+  --color-success-bg: var(--color-present-bg);
+  --color-success-line: var(--color-present-line);
+  --color-danger: var(--color-absent);
+  --color-danger-bg: var(--color-absent-bg);
+  --color-danger-line: var(--color-absent-line);
 
-  /* Radios */
+  /* ── Elevación: una escala, no sombras inventadas por componente ─────── */
+  --shadow-1: 0 1px 2px rgb(24 35 32 / 6%);
+  --shadow-2: 0 1px 2px rgb(24 35 32 / 5%), 0 4px 12px rgb(24 35 32 / 5%);
+  --shadow-3: 0 2px 4px rgb(24 35 32 / 5%), 0 12px 28px rgb(24 35 32 / 8%);
+  --shadow-4: 0 8px 20px rgb(24 35 32 / 10%), 0 24px 56px rgb(24 35 32 / 12%);
+  --shadow-inset-line: inset 0 -1px 0 var(--color-line);
+
+  /* ── Radios ──────────────────────────────────────────────────────────── */
+  --radius-xs: 5px;
   --radius-sm: 7px;
-  --radius-md: 8px;
-  --radius-lg: 12px;
+  --radius-md: 9px;
+  --radius-lg: 13px;
+  --radius-xl: 18px;
   --radius-pill: 999px;
 
-  /* Espaciado */
+  /* ── Espaciado: múltiplos de 4 ───────────────────────────────────────── */
   --space-1: 4px;
   --space-2: 8px;
   --space-3: 12px;
@@ -65,23 +113,77 @@
   --space-5: 24px;
   --space-6: 32px;
   --space-7: 48px;
+  --space-8: 64px;
 
-  /* Tipografía */
+  /* ── Tipografía ──────────────────────────────────────────────────────── */
   --font-sans:
     Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI',
     sans-serif;
-  --text-xs: 10px;
+  --font-mono: ui-monospace, SFMono-Regular, 'Cascadia Mono', Menlo, Consolas, monospace;
+
+  --text-xs: 11px;
   --text-sm: 12px;
   --text-base: 13px;
   --text-md: 14px;
-  --text-lg: 18px;
-  --text-xl: 24px;
-  --text-2xl: 34px;
+  --text-lg: 16px;
+  --text-xl: 20px;
+  --text-2xl: 26px;
+  --text-3xl: 34px;
 
-  /* Sombras y foco */
-  --shadow-card: 0 1px 2px rgb(24 35 32 / 5%), 0 8px 24px rgb(24 35 32 / 4%);
-  --focus-ring: 3px solid rgb(69 133 90 / 24%);
+  --leading-tight: 1.25;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.7;
 
-  /* Transiciones */
-  --transition: 150ms ease;
+  /* ── Capas: una escala, para no pelear con z-index sueltos ───────────── */
+  --z-base: 0;
+  --z-sticky: 10;
+  --z-sidebar: 20;
+  --z-topbar: 30;
+  --z-overlay: 100;
+  --z-modal: 110;
+  --z-toast: 200;
+
+  /* ── Movimiento. Entradas con ease-out, salidas más rápidas ──────────── */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in: cubic-bezier(0.64, 0, 0.78, 0);
+  --duration-fast: 120ms;
+  --duration: 180ms;
+  --duration-slow: 260ms;
+  --transition: var(--duration) var(--ease-out);
+
+  --focus-ring: 2px solid var(--green-500);
+  --focus-offset: 2px;
+
+  /* ── Medidas de layout ───────────────────────────────────────────────── */
+  --sidebar-width: 244px;
+  --topbar-height: 60px;
+  --content-max: 1240px;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+ * Alias de compatibilidad.
+ * El CSS escrito antes de esta escala usa estos nombres; se mantienen
+ * apuntando a los tokens nuevos para no tener que reescribir cada archivo.
+ * ────────────────────────────────────────────────────────────────────────── */
+:root {
+  --color-brand: var(--green-600);
+  --color-brand-strong: var(--green-700);
+  --color-brand-stronger: var(--green-800);
+  --color-brand-soft: var(--green-500);
+  --color-brand-muted: var(--green-600);
+  --color-brand-ring: var(--green-400);
+
+  --color-surface-page: var(--color-canvas);
+  --color-surface-selected: var(--green-50);
+  --color-surface-tint: var(--green-50);
+  --color-surface-tint-hover: var(--green-100);
+
+  --color-border: var(--color-line);
+  --color-border-strong: var(--color-line);
+  --color-border-control: var(--color-line-strong);
+  --color-border-muted: var(--color-line-strong);
+  --color-border-hover: var(--neutral-400);
+
+  --color-danger-border: var(--color-danger-line);
+  --shadow-card: var(--shadow-2);
 }

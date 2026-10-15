@@ -75,7 +75,7 @@ function ModuleDetailPage() {
     <section aria-labelledby="module-title">
       <Link className="back-link" to={paths.adminModules}>← Módulos</Link>
       <div className="module-heading">
-        <h1 className="page-title" id="module-title">{module.name}</h1>
+        <h2 className="page-title" id="module-title">{module.name}</h2>
         <span className={`module-status module-status--${module.status}`}>
           {isDraft ? 'Borrador' : module.status === 'active' ? 'Activo' : 'Archivado'}
         </span>

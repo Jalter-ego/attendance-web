@@ -77,8 +77,7 @@ function AttendancesPage() {
 
   return (
     <section aria-labelledby="attendances-title">
-      <span className="section-kicker">ASISTENCIAS</span>
-      <h1 className="page-title" id="attendances-title">{data.module.name}</h1>
+      <h2 className="page-title" id="attendances-title">{data.module.name}</h2>
 
       <div className="attendances-filters">
         <label className="filter-field">

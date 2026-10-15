@@ -1,4 +1,5 @@
-import AppHeader from '../../components/shared/AppHeader'
+import Icon from '../../components/shared/Icon'
+import TopBar from '../../components/shared/TopBar'
 import AttendanceHistory from '../../features/attendance/components/AttendanceHistory'
 import { useStudentAttendance } from '../../features/attendance/hooks/use-student-attendance'
 import type { StudentSession } from '../../features/auth/types/session'
@@ -15,33 +16,43 @@ function StudentAttendancePage({ session, onLogout, signingOut }: StudentAttenda
   const { state, marking, feedback, mark, retry } = useStudentAttendance(session.accessToken)
 
   return (
-    <main className="page">
-      <AppHeader
-        institution={session.tenant.name}
-        userName={session.student.fullName}
-        userDetail={`Registro ${session.student.registrationNumber}`}
+    <div className="student-shell">
+      <a className="skip-link" href="#contenido">Saltar al contenido</a>
+
+      <TopBar
         onLogout={onLogout}
         signingOut={signingOut}
+        subtitle={session.tenant.name}
+        title="Mi asistencia"
+        userDetail={`Registro ${session.student.registrationNumber}`}
+        userName={session.student.fullName}
       />
 
-      {state.status === 'loading' && <p className="page-status" role="status">Cargando tu asistencia…</p>}
+      <main className="page" id="contenido">
+        {state.status === 'loading' && (
+          <p className="page-status" role="status">Cargando tu asistencia…</p>
+        )}
 
-      {state.status === 'error' && (
-        <div className="page-error" role="alert">
-          <p>{state.message}</p>
-          <button className="secondary-button" type="button" onClick={retry}>Volver a intentar</button>
-        </div>
-      )}
+        {state.status === 'error' && (
+          <div className="page-error" role="alert">
+            <p>{state.message}</p>
+            <button className="secondary-button" type="button" onClick={retry}>
+              <Icon name="history" size={16} />
+              Volver a intentar
+            </button>
+          </div>
+        )}
 
-      {state.status === 'ready' && (
-        <AttendanceHistory
-          history={state.history}
-          marking={marking}
-          feedback={feedback}
-          onMark={() => void mark()}
-        />
-      )}
-    </main>
+        {state.status === 'ready' && (
+          <AttendanceHistory
+            feedback={feedback}
+            history={state.history}
+            marking={marking}
+            onMark={() => void mark()}
+          />
+        )}
+      </main>
+    </div>
   )
 }
 

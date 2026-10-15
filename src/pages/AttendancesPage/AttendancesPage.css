@@ -1,112 +1,250 @@
+/* ── Barra de filtros y descarga ───────────────────────────────────────── */
 .attendances-filters {
   display: flex;
   flex-wrap: wrap;
+  align-items: flex-end;
   gap: var(--space-3) var(--space-4);
   margin-bottom: var(--space-5);
+  padding: var(--space-4);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-1);
 }
 
-.attendances-empty { color: var(--color-text-body); }
-
-.attendances-hint { margin: var(--space-3) 0 0; color: var(--color-text-muted); font-size: var(--text-sm); line-height: 1.6; }
-
-/* Descarga del Excel (RF-17). `margin-top: auto` lo alinea con los filtros,
-   que son más altos por su etiqueta */
 .attendances-export {
   display: flex;
   min-width: 0;
   flex-direction: column;
   gap: var(--space-1);
-  margin-top: auto;
+  margin-left: auto;
 }
 
 .attendances-export-scope {
   overflow: hidden;
   color: var(--color-text-muted);
   font-size: var(--text-xs);
+  text-align: center;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .attendances-export-note {
   margin: 0 0 var(--space-4);
-  color: var(--color-text-body);
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--color-pending-line);
+  border-radius: var(--radius-md);
+  color: var(--color-pending);
+  background: var(--color-pending-bg);
   font-size: var(--text-sm);
-  line-height: 1.6;
+  line-height: var(--leading-normal);
 }
 
-/* Tabla estudiante × fecha */
+.attendances-empty {
+  margin: 0;
+  padding: var(--space-8) var(--space-5);
+  border: 1px dashed var(--color-line-strong);
+  border-radius: var(--radius-lg);
+  color: var(--color-text-muted);
+  text-align: center;
+}
+
+.attendances-hint {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin: var(--space-3) 0 0;
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+  line-height: var(--leading-normal);
+}
+
+/* ── Tabla estudiante × fecha ──────────────────────────────────────────── */
 .grid-wrap {
-  overflow-x: auto;
-  border: 1px solid var(--color-border);
+  overflow: auto;
+  max-height: 68vh;
+  border: 1px solid var(--color-line);
   border-radius: var(--radius-lg);
   background: var(--color-surface);
+  box-shadow: var(--shadow-1);
 }
 
-.attendance-grid { width: 100%; border-collapse: separate; border-spacing: 0; font-size: var(--text-base); }
+.attendance-grid {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: var(--text-base);
+}
 
 .attendance-grid th,
 .attendance-grid td {
-  padding: 10px 12px;
-  border-bottom: 1px solid var(--color-border);
+  padding: var(--space-2) var(--space-3);
+  border-bottom: 1px solid var(--color-line-subtle);
   text-align: center;
   white-space: nowrap;
 }
 
-.attendance-grid thead th { color: var(--color-text-body); font-size: var(--text-sm); font-weight: 600; }
-.attendance-grid tbody tr:last-child th,
-.attendance-grid tbody tr:last-child td { border-bottom: 1px solid var(--color-border-control); }
-.attendance-grid tfoot th,
-.attendance-grid tfoot td { border-bottom: 0; color: var(--color-text-body); font-size: var(--text-sm); }
-
-.attendance-grid .is-today { background: var(--color-surface-selected); }
-
-/* La columna del estudiante queda fija al desplazar horizontalmente */
-.grid-student {
+/* Encabezado fijo al desplazar: con muchas fechas se pierde la referencia */
+.attendance-grid thead th {
   position: sticky;
-  left: 0;
-  z-index: 1;
-  min-width: 180px;
-  border-right: 1px solid var(--color-border);
-  background: var(--color-surface);
-  text-align: left !important;
+  z-index: var(--z-sticky);
+  top: 0;
+  border-bottom: 1px solid var(--color-line);
+  color: var(--color-text-muted);
+  background: var(--color-surface-sunken);
+  font-size: var(--text-xs);
+  font-weight: 650;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
 }
 
-.grid-student-name { display: block; color: var(--color-text); font-weight: 600; }
-.grid-student-registration { display: block; color: var(--color-text-muted); font-size: var(--text-sm); font-weight: 400; }
+/* Columna del estudiante fija en horizontal, por el mismo motivo */
+.attendance-grid .grid-student {
+  position: sticky;
+  left: 0;
+  min-width: 180px;
+  background: var(--color-surface);
+  text-align: left;
+}
+
+.attendance-grid thead .grid-student {
+  z-index: calc(var(--z-sticky) + 1);
+  background: var(--color-surface-sunken);
+}
+
+.attendance-grid tbody .grid-student {
+  box-shadow: 1px 0 0 var(--color-line);
+}
+
+.grid-student-name {
+  display: block;
+  color: var(--color-text-strong);
+  font-weight: 600;
+}
+
+.grid-student-registration {
+  display: block;
+  color: var(--color-text-muted);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+}
+
+.attendance-grid tbody tr { transition: background-color var(--duration-fast) var(--ease-out); }
+.attendance-grid tbody tr:hover { background: var(--color-surface-sunken); }
+.attendance-grid tbody tr:hover .grid-student { background: var(--color-surface-sunken); }
+
+/* Columna de hoy resaltada, y además rotulada "Hoy" en el encabezado */
+.attendance-grid th.is-today,
+.attendance-grid td.is-today { background: var(--color-action-subtle); }
+.attendance-grid tbody tr:hover td.is-today { background: var(--green-100); }
 
 .grid-today {
   display: block;
   margin-top: 2px;
-  color: var(--color-brand-muted);
+  color: var(--color-action-text);
   font-size: var(--text-xs);
   font-weight: 700;
-  letter-spacing: 0.6px;
+}
+
+/* ── Celdas de estado ──────────────────────────────────────────────────── */
+.grid-status {
+  display: inline-flex;
+  min-width: 78px;
+  min-height: 28px;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 0 var(--space-2);
+  border: 1px solid transparent;
+  border-radius: var(--radius-pill);
+  font-size: var(--text-xs);
+  font-weight: 650;
+  transition:
+    border-color var(--transition),
+    box-shadow var(--transition),
+    transform var(--duration-fast) var(--ease-out);
+}
+
+button.grid-status:hover:not(:disabled) {
+  box-shadow: var(--shadow-1);
+  transform: translateY(-1px);
+}
+
+button.grid-status:active:not(:disabled) { transform: translateY(0); }
+button.grid-status:focus-visible { outline: var(--focus-ring); outline-offset: var(--focus-offset); }
+button.grid-status:disabled { cursor: progress; opacity: 0.6; }
+
+.grid-status--present {
+  border-color: var(--color-present-line);
+  color: var(--color-present);
+  background: var(--color-present-bg);
+}
+
+.grid-status--absent {
+  border-color: var(--color-absent-line);
+  color: var(--color-absent);
+  background: var(--color-absent-bg);
+}
+
+.grid-status--pending {
+  border-color: var(--color-pending-line);
+  color: var(--color-pending);
+  background: var(--color-pending-bg);
+}
+
+.grid-status--upcoming {
+  border-color: var(--color-upcoming-line);
+  color: var(--color-upcoming);
+  background: var(--color-upcoming-bg);
+}
+
+/* Punto de "corregido por un administrador" */
+.grid-edited {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.grid-cell { color: var(--color-text-subtle); }
+
+/* ── Totales ───────────────────────────────────────────────────────────── */
+.attendance-grid .grid-total {
+  color: var(--color-text-body);
+  font-variant-numeric: tabular-nums;
+  font-weight: 650;
+}
+
+.attendance-grid .grid-total--present { color: var(--color-present); }
+.attendance-grid .grid-total--absent { color: var(--color-absent); }
+
+.attendance-grid tfoot th,
+.attendance-grid tfoot td {
+  position: sticky;
+  bottom: 0;
+  border-top: 1px solid var(--color-line);
+  border-bottom: 0;
+  background: var(--color-surface-sunken);
+  font-size: var(--text-xs);
+}
+
+.attendance-grid tfoot .grid-student {
+  z-index: calc(var(--z-sticky) + 1);
+  background: var(--color-surface-sunken);
+  color: var(--color-text-muted);
+  font-weight: 650;
+  letter-spacing: 0.3px;
   text-transform: uppercase;
 }
 
-.grid-status {
-  position: relative;
-  display: inline-block;
-  min-width: 86px;
-  padding: 6px 10px;
-  border: 1px solid transparent;
-  border-radius: var(--radius-pill);
-  font-size: var(--text-sm);
-  font-weight: 700;
+@media (max-width: 720px) {
+  .attendances-export { margin-left: 0; width: 100%; }
+  .attendances-export-scope { text-align: left; }
+  .grid-wrap { max-height: none; }
 }
 
-button.grid-status { cursor: pointer; transition: border-color var(--transition), filter var(--transition); }
-button.grid-status:hover:not(:disabled) { border-color: currentcolor; }
-button.grid-status:focus-visible { outline: 3px solid var(--color-brand-ring); outline-offset: 2px; }
-button.grid-status:disabled { cursor: wait; }
-
-.grid-status--present { color: var(--color-present); background: var(--color-present-bg); }
-.grid-status--absent { color: var(--color-absent); background: var(--color-absent-bg); }
-.grid-status--pending { color: var(--color-pending); background: var(--color-pending-bg); }
-.grid-status--upcoming { color: var(--color-upcoming); background: var(--color-upcoming-bg); }
-
-.grid-edited { position: absolute; top: -2px; right: 6px; font-size: 16px; line-height: 1; }
-
-.grid-total { font-weight: 700; font-variant-numeric: tabular-nums; }
-.grid-total--present { color: var(--color-present); }
-.grid-total--absent { color: var(--color-absent); }
+@media (prefers-reduced-motion: reduce) {
+  .grid-status,
+  .attendance-grid tbody tr { transition-duration: 1ms; }
+  button.grid-status:hover:not(:disabled) { transform: none; }
+}
