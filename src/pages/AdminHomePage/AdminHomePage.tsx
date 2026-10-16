@@ -1,5 +1,6 @@
-import { Clock } from 'lucide-react'
+import { ArrowUpRight, CalendarDays, Clock } from 'lucide-react'
 import { Link } from 'react-router'
+import PageHeading from '../../components/shared/PageHeading'
 import { useActivity } from '../../features/activity/hooks/use-activity'
 import { actionLabel, describeActivity, formatDateTime } from '../../features/activity/utils/describe'
 import { useAttendanceOverview } from '../../features/attendance/hooks/use-attendance-overview'
@@ -49,12 +50,21 @@ function AdminHomePage() {
     .filter((item) => item.action !== 'LOGIN' && item.action !== 'LOGOUT')
     .slice(0, RECENT_COUNT)
 
+  const metrics = data ? summarize(data) : null
+  const studentCount = new Set(data?.records.map((record) => record.student.id)).size
+
   return (
     <div className="home">
-      <header className="home-heading">
-        <h2 className="page-title">{data ? formatClassDate(data.today) : `Hola, ${firstName}`}</h2>
-        {data && <p>Hola, {firstName}. Esto es lo que pasa hoy en {data.module.name}.</p>}
-      </header>
+      <PageHeading title={`Hola, ${firstName}`} description={data ? `Este es el resumen de ${data.module.name}.` : 'Tu espacio para el seguimiento de la asistencia.'}
+        actions={data && <span className="home-date"><CalendarDays size={16} aria-hidden="true" />{formatClassDate(data.today)}</span>} />
+
+      {metrics && (
+        <dl className="summary-grid home-summary">
+          <div className="summary-card"><dt>Estudiantes inscritos</dt><dd>{studentCount}</dd></div>
+          <div className="summary-card"><dt>Clases dadas</dt><dd>{metrics.held}<span className="summary-context"> / {metrics.sessions.length}</span></dd></div>
+          <div className="summary-card summary-card--present"><dt>Asistencia del módulo</dt><dd>{metrics.rate === null ? '—' : `${metrics.rate}%`}</dd></div>
+        </dl>
+      )}
 
       <div className="home-grid">
         {overview.state.status === 'loading' && <p className="page-status" role="status">Cargando el día…</p>}
@@ -71,8 +81,9 @@ function AdminHomePage() {
 
         {data && <TodayPanel data={data} />}
 
-        <section className="home-recent" aria-labelledby="recent-title">
-          <h2 id="recent-title">Últimas acciones</h2>
+        <section className="home-recent workspace-panel" aria-labelledby="recent-title">
+          <header className="panel-heading"><div><h2 id="recent-title">Actividad reciente</h2><p>Marcas, correcciones e importaciones del módulo.</p></div></header>
+          <div className="home-recent-body">
           {activity.error ? (
             <p className="home-muted">{activity.error}</p>
           ) : !activity.data ? (
@@ -92,7 +103,8 @@ function AdminHomePage() {
               ))}
             </ol>
           )}
-          <Link className="home-link" to={paths.adminActivity}>Ver todo el historial</Link>
+          <Link className="home-link" to={paths.adminActivity}>Ver todo el historial <ArrowUpRight size={14} aria-hidden="true" /></Link>
+          </div>
         </section>
       </div>
     </div>
@@ -100,14 +112,14 @@ function AdminHomePage() {
 }
 
 function TodayPanel({ data }: { data: AttendanceOverview }) {
-  const { sessions, todaySession, nextSession, todayRecords, held, rate } = summarize(data)
+  const { todaySession, nextSession, todayRecords } = summarize(data)
   const marked = todayRecords.filter((r) => r.status === 'present').length
   const missing = todayRecords.filter((r) => r.status === 'pending')
 
   return (
     <section className="home-today" aria-labelledby="today-title">
       <header className="home-today-header">
-        <h3 id="today-title">{todaySession ? 'Clase de hoy' : 'Hoy no hay clase'}</h3>
+        <h2 id="today-title">{todaySession ? 'Clase de hoy' : 'Hoy no hay clase'}</h2>
         {todaySession && (
           <span>
             <Clock size={14} aria-hidden="true" />
@@ -153,17 +165,6 @@ function TodayPanel({ data }: { data: AttendanceOverview }) {
               : 'El módulo ya no tiene clases por delante.'}
           </p>
         )}
-
-        <dl className="home-today-module">
-          <div>
-            <dt>Clases dadas</dt>
-            <dd>{held} de {sessions.length}</dd>
-          </div>
-          <div>
-            <dt>Asistencia del módulo</dt>
-            <dd>{rate === null ? '—' : `${rate}%`}</dd>
-          </div>
-        </dl>
 
         <Link className="primary-button home-today-action" to={paths.adminAttendances}>Abrir asistencias</Link>
       </div>

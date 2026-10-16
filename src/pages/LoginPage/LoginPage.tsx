@@ -14,9 +14,9 @@ function LoginPage(props: LoginPageProps) {
     <AuthLayout>
       <div className="login-content">
         <div className="login-heading">
-          <span className="login-kicker">TE DAMOS LA BIENVENIDA</span>
-          <h2>Inicia sesión</h2>
-          <p>Ingresa tus datos para continuar a tu cuenta.</p>
+          <span className="login-kicker">Acceso institucional</span>
+          <h1 id="login-title">Inicia sesión</h1>
+          <p>Ingresa a tu espacio de control de asistencia.</p>
         </div>
         <LoginForm {...props} />
       </div>

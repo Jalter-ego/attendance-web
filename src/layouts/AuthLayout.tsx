@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { ClipboardCheck } from 'lucide-react'
 import './AuthLayout.css'
 
 type AuthLayoutProps = {
@@ -8,7 +9,8 @@ type AuthLayoutProps = {
 function AuthLayout({ children }: AuthLayoutProps) {
   return (
     <main className="auth-layout">
-      <section className="auth-panel">{children}</section>
+      <div className="auth-brand"><ClipboardCheck size={27} strokeWidth={1.8} aria-hidden="true" /><span>Attendance<span>.</span></span></div>
+      <section className="auth-panel" aria-labelledby="login-title">{children}</section>
     </main>
   )
 }

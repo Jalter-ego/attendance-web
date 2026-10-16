@@ -5,10 +5,10 @@
   border-radius: var(--radius-lg);
   color: var(--color-text);
   background: var(--color-surface);
-  box-shadow: 0 20px 48px rgb(24 35 32 / 18%);
+  box-shadow: var(--shadow-dialog);
 }
 
-.confirm-dialog::backdrop { background: rgb(24 35 32 / 35%); }
+.confirm-dialog::backdrop { background: var(--color-backdrop); }
 
 .confirm-dialog h2 { margin: 0 0 var(--space-3); font-size: var(--text-lg); }
 
@@ -27,7 +27,7 @@
   padding: 11px 16px;
   border: 0;
   border-radius: var(--radius-sm);
-  color: #fff;
+  color: var(--color-on-brand);
   font-size: var(--text-base);
   font-weight: 700;
   cursor: pointer;

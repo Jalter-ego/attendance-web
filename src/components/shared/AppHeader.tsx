@@ -21,7 +21,7 @@ function AppHeader({ institution, userName, userDetail, onLogout, signingOut }: 
       <div className="app-header-brand">
         <span className="app-header-logo" aria-hidden="true"><ClipboardCheck size={18} strokeWidth={2.2} /></span>
         <div>
-          <p className="app-header-product">Control de asistencia</p>
+          <p className="app-header-product">Attendance<span>.</span></p>
           <p className="app-header-institution">{institution}</p>
         </div>
       </div>

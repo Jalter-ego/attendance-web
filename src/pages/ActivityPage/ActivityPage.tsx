@@ -1,5 +1,7 @@
-import { ChevronLeft, ChevronRight, X } from 'lucide-react'
+import { ChevronLeft, ChevronRight, History, X } from 'lucide-react'
 import { useSearchParams } from 'react-router'
+import PageHeading from '../../components/shared/PageHeading'
+import EmptyState from '../../components/shared/EmptyState'
 import { PAGE_SIZE, useActivity } from '../../features/activity/hooks/use-activity'
 import type { ActivityItem } from '../../features/activity/types/activity'
 import { actionLabel, describeActivity, formatDateTime, formatDayHeading, formatTime, localDay } from '../../features/activity/utils/describe'
@@ -43,9 +45,12 @@ function ActivityPage() {
   }
 
   return (
-    <section aria-label="Historial de actividades">
+    <section aria-labelledby="activity-title">
+      <PageHeading id="activity-title" title="Actividad" description="Consulta las marcas de asistencia y los cambios realizados en el módulo activo." />
+      <div className="workspace-panel">
+        <header className="panel-heading"><div><h2>Historial de actividad</h2><p>{students.data?.module.name ?? 'Módulo activo'}</p></div>{data && <span className="count-label">{data.total} registros</span>}</header>
 
-      <div className="activity-filters">
+      <div className="activity-filters panel-toolbar">
         <label className="filter-field">
           <span>Estudiante</span>
           <select
@@ -82,12 +87,12 @@ function ActivityPage() {
       ) : !data ? (
         <p className="page-status" role="status">Cargando historial…</p>
       ) : data.items.length === 0 ? (
-        <p className="activity-empty">
-          {studentId || date ? 'No hay actividad con estos filtros.' : 'Todavía no hay actividad en el módulo activo.'}
-        </p>
+        <EmptyState icon={History} title={studentId || date ? 'Sin actividad para estos filtros' : 'Todavía no hay actividad'}
+          description={studentId || date ? 'Prueba con otra fecha o consulta todos los estudiantes.' : 'Aquí aparecerán las marcas de asistencia y los cambios del módulo.'}
+          actions={(studentId || date) && <button className="secondary-button" type="button" onClick={() => update({ estudiante: '', fecha: '', pagina: '' })}>Ver toda la actividad</button>} />
       ) : (
         <>
-          <div className={`ledger-wrap${loading ? ' is-loading' : ''}`} aria-busy={loading}>
+          <div className={`ledger-wrap panel-table${loading ? ' is-loading' : ''}`} aria-busy={loading} tabIndex={0} role="region" aria-label="Registros de actividad">
             <table className="ledger activity-table">
               <thead>
                 <tr>
@@ -147,6 +152,7 @@ function ActivityPage() {
           </nav>
         </>
       )}
+      </div>
     </section>
   )
 }

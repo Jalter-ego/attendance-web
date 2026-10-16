@@ -1,49 +1,21 @@
-/* Crear borrador: texto a la izquierda y el campo con su botón a la derecha */
-.module-create {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
-  gap: var(--space-3) var(--space-6);
-  align-items: end;
-  margin-bottom: var(--space-6);
-  padding-bottom: var(--space-6);
-  border-bottom: 1px solid var(--color-border);
-}
-
-.module-create-text h2 { margin: 0 0 var(--space-1); font-size: var(--text-lg); }
-.module-create-text p { margin: 0; color: var(--color-text-body); font-size: var(--text-base); line-height: 1.6; }
-
-.module-create-fields { display: flex; flex-wrap: wrap; align-items: flex-end; gap: var(--space-3); }
+.module-create { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); gap: 20px 32px; align-items: center; margin-bottom: 24px; padding: 24px; }
+.module-create-text h2 { margin: 0 0 8px; font-size: var(--text-md); font-weight: 600; }
+.module-create-text p { max-width: 48ch; margin: 0; color: var(--color-text-body); font-size: var(--text-sm); line-height: 1.8; }
+.module-create-fields { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 12px; }
 .module-create-fields .filter-field { max-width: none; }
 .module-create .page-feedback { grid-column: 1 / -1; margin: 0; }
-
-.module-table { min-width: 520px; font-size: var(--text-md); }
+.modules-list .panel-table { margin-top: 20px; }
+.module-table { min-width: 520px; font-size: var(--text-base); }
 .module-table thead th:not(:first-child) { width: 120px; }
 .module-table td { vertical-align: middle; }
-
-.module-row-name { color: var(--color-text); font-weight: 600; text-decoration: none; overflow-wrap: anywhere; }
-.module-row-name:hover { color: var(--color-brand-strong); text-decoration: underline; }
+.module-row-name { color: var(--color-text-strong); font-weight: 500; text-decoration: none; overflow-wrap: anywhere; }
+.module-row-name:hover { color: var(--color-brand); text-decoration: underline; text-underline-offset: 3px; }
 .module-row-name:focus-visible { outline: var(--focus-ring); outline-offset: 2px; }
-
-/* El módulo en curso lleva el lomo verde de la barra lateral */
-.module-row--active td:first-child { box-shadow: inset 3px 0 var(--color-brand); }
-
-.module-row-count { color: var(--color-text-body); font-variant-numeric: tabular-nums; }
+.module-row-count { color: var(--color-text-body); font-size: var(--text-sm); font-variant-numeric: tabular-nums; }
 .module-row-status { text-align: right; }
-
-/* Estado del módulo; también lo usa el detalle */
-.module-status {
-  display: inline-block;
-  padding: 3px 10px;
-  border-radius: var(--radius-pill);
-  font-size: var(--text-sm);
-  font-weight: 700;
-  white-space: nowrap;
-}
-
+.module-status { display: inline-block; padding: 5px 12px; border-radius: var(--radius-pill); font-size: var(--text-xs); font-weight: 500; white-space: nowrap; }
 .module-status--active { color: var(--color-present); background: var(--color-present-bg); }
 .module-status--draft { color: var(--color-pending); background: var(--color-pending-bg); }
 .module-status--archived { color: var(--color-upcoming); background: var(--color-upcoming-bg); }
-
-@media (max-width: 760px) {
-  .module-create { grid-template-columns: minmax(0, 1fr); }
-}
+@media (max-width: 1100px) { .module-create { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 640px) { .module-create { padding: 20px 16px; } .module-create-fields { align-items: stretch; flex-direction: column; } .module-create-fields .filter-field { flex-basis: auto; } }

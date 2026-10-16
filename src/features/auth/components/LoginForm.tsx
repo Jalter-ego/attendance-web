@@ -1,5 +1,6 @@
 import type { FormEvent } from 'react'
-import { useState } from 'react'
+import { useId, useState } from 'react'
+import { Eye, EyeOff } from 'lucide-react'
 import RoleSelector from './RoleSelector'
 import type { UserRole } from '../types/user-role'
 import type { LoginCredentials } from '../types/session'
@@ -12,6 +13,8 @@ type LoginFormProps = {
 }
 
 function LoginForm({ tenant, message, onLogin }: LoginFormProps) {
+  const passwordId = useId()
+  const [passwordVisible, setPasswordVisible] = useState(false)
   const [selectedRole, setSelectedRole] = useState<UserRole>('student')
   const [error, setError] = useState('')
   const [submitting, setSubmitting] = useState(false)
@@ -64,7 +67,7 @@ function LoginForm({ tenant, message, onLogin }: LoginFormProps) {
         <legend>Ingresa como</legend>
         <RoleSelector
           selectedRole={selectedRole}
-          onRoleChange={(role) => { setSelectedRole(role); setError('') }}
+          onRoleChange={(role) => { setSelectedRole(role); setPasswordVisible(false); setError('') }}
         />
       </fieldset>
 
@@ -83,19 +86,17 @@ function LoginForm({ tenant, message, onLogin }: LoginFormProps) {
       </label>
 
       {selectedRole === 'admin' && (
-        <label className="form-field">
-          <span>Contraseña</span>
-          <span className="input-wrap">
-              <input
-                autoComplete="current-password"
-                name="password"
-              placeholder="Ingresa tu contraseña"
-              type="password"
-              required
-              disabled={submitting}
-            />
-          </span>
-        </label>
+        <div className="form-field">
+          <label htmlFor={passwordId}>Contraseña</label>
+          <div className="input-wrap">
+            <input id={passwordId} autoComplete="current-password" name="password" placeholder="Ingresa tu contraseña"
+              type={passwordVisible ? 'text' : 'password'} required disabled={submitting} />
+            <button className="password-toggle" type="button" aria-label={passwordVisible ? 'Ocultar contraseña' : 'Mostrar contraseña'}
+              aria-pressed={passwordVisible} onClick={() => setPasswordVisible((visible) => !visible)} disabled={submitting}>
+              {passwordVisible ? <EyeOff size={18} strokeWidth={1.7} aria-hidden="true" /> : <Eye size={18} strokeWidth={1.7} aria-hidden="true" />}
+            </button>
+          </div>
+        </div>
       )}
 
         <div className="form-options">
