@@ -1,38 +1,38 @@
-/* Tokens de diseño.
- * Los valores salen de la pantalla de login ya aprobada (feature/login-screen),
- * extraídos para que las vistas nuevas usen la misma paleta en lugar de repetir hex.
+/* Tema compartido. Cambia --color-brand para personalizar el acento de la app.
+ * Sus variantes se calculan aquí; los colores de estado son independientes.
  */
 :root {
   /* Marca */
-  --color-brand: #315b40;
-  --color-brand-strong: #234b35;
-  --color-brand-stronger: #1b3e2b;
-  --color-brand-soft: #4d795d;
-  --color-brand-muted: #53745f;
-  --color-brand-ring: #6c997a;
+  --color-brand: #7a5491;
+  --color-brand-strong: color-mix(in srgb, var(--color-brand), black 18%);
+  --color-brand-stronger: color-mix(in srgb, var(--color-brand), black 30%);
+  --color-brand-soft: color-mix(in srgb, var(--color-brand), white 15%);
+  --color-brand-muted: color-mix(in srgb, var(--color-brand), white 10%);
+  --color-brand-ring: color-mix(in srgb, var(--color-brand), white 30%);
+  --color-on-brand: #fff;
 
   /* Texto */
-  --color-text: #182320;
-  --color-text-heading: #1d2922;
-  --color-text-strong: #26332b;
-  --color-text-label: #344139;
-  --color-text-body: #66736a;
-  --color-text-muted: #78837b;
+  --color-text: #242a27;
+  --color-text-heading: #202623;
+  --color-text-strong: #303733;
+  --color-text-label: #454d48;
+  --color-text-body: #626b65;
+  --color-text-muted: #6e7770;
   --color-text-subtle: #929d95;
 
   /* Superficies */
   --color-surface: #fff;
-  --color-surface-page: #f5f7f5;
-  --color-surface-selected: #f7faf7;
-  --color-surface-tint: #edf3ee;
-  --color-surface-tint-hover: #eaf0eb;
+  --color-surface-page: #f7f8f7;
+  --color-surface-selected: color-mix(in srgb, var(--color-brand), white 96%);
+  --color-surface-tint: color-mix(in srgb, var(--color-brand), white 92%);
+  --color-surface-tint-hover: color-mix(in srgb, var(--color-brand), white 88%);
 
   /* Bordes */
-  --color-border: #dfe5e0;
-  --color-border-strong: #e1e6e2;
-  --color-border-control: #c9d6cd;
-  --color-border-muted: #bac5bd;
-  --color-border-hover: #a8b9ad;
+  --color-border: #e4e8e5;
+  --color-border-strong: #d8ded9;
+  --color-border-control: #cbd2cd;
+  --color-border-muted: #b8c0ba;
+  --color-border-hover: #9ca99f;
 
   /* Estados de asistencia (alineados con los status del API) */
   --color-present: #2f6b45;
@@ -45,11 +45,11 @@
   --color-upcoming-bg: #eef1f4;
 
   /* Feedback */
-  --color-danger: #a3372f;
-  --color-danger-bg: #fbece9;
+  --color-danger: var(--color-absent);
+  --color-danger-bg: var(--color-absent-bg);
   --color-danger-border: #f0cdc7;
-  --color-success: #2f6b45;
-  --color-success-bg: #eaf4ed;
+  --color-success: var(--color-present);
+  --color-success-bg: var(--color-present-bg);
 
   /* Radios */
   --radius-sm: 7px;
@@ -79,10 +79,16 @@
   --text-lg: 16px;
   --text-xl: 20px;
   --text-2xl: 34px;
+  --text-page-title: 26px;
+  --text-page-title-mobile: 23px;
 
   /* Sombras y foco */
   --shadow-card: 0 1px 2px rgb(24 35 32 / 5%), 0 8px 24px rgb(24 35 32 / 4%);
-  --focus-ring: 3px solid rgb(69 133 90 / 24%);
+  --shadow-dialog: 0 20px 48px rgb(24 35 32 / 18%);
+  --color-backdrop: rgb(24 35 32 / 35%);
+  --focus-color: color-mix(in srgb, var(--color-brand), transparent 76%);
+  --focus-ring: 3px solid var(--focus-color);
+  --focus-shadow: 0 0 0 3px var(--focus-color);
 
   /* Transiciones */
   --transition: 150ms ease;
