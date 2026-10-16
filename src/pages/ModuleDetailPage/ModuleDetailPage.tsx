@@ -2,6 +2,7 @@ import { ArrowLeft, Power } from 'lucide-react'
 import { useState } from 'react'
 import { Link, useParams } from 'react-router'
 import ConfirmDialog from '../../components/shared/ConfirmDialog'
+import PageHeading from '../../components/shared/PageHeading'
 import { formatClassDate } from '../../features/attendance/utils/format'
 import { useAdminSession } from '../../features/auth/context/useAdminSession'
 import ImportCard from '../../features/modules/components/ImportCard'
@@ -30,13 +31,12 @@ function ModuleDetailPage() {
   const [activating, setActivating] = useState(false)
   const [feedback, setFeedback] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
 
-  if (detail.state.status === 'loading') return <p className="page-status" role="status">Cargando módulo…</p>
+  if (detail.state.status === 'loading') return <section><PageHeading title="Detalle del módulo" description="Estudiantes y fechas de clase del módulo." /><p className="page-status" role="status">Cargando módulo…</p></section>
   if (detail.state.status === 'error') {
     return (
-      <div className="page-error" role="alert">
-        <p>{detail.state.message}</p>
-        <Link className="secondary-button" to={paths.adminModules}>Volver a módulos</Link>
-      </div>
+      <section><PageHeading title="Detalle del módulo" description="Estudiantes y fechas de clase del módulo." /><div className="page-error" role="alert">
+        <p>{detail.state.message}</p><Link className="secondary-button" to={paths.adminModules}>Volver a módulos</Link>
+      </div></section>
     )
   }
 
@@ -74,14 +74,15 @@ function ModuleDetailPage() {
     }
   }
 
+  const PreviewHeading = isDraft ? 'h3' : 'h2'
   const preview = (
     <div className="preview-grid">
-      <section aria-labelledby="preview-students">
-        <h3 className="preview-title" id="preview-students">Estudiantes <span>{module.studentsCount}</span></h3>
+      <section className="workspace-panel preview-panel" aria-labelledby="preview-students">
+        <header className="panel-heading"><PreviewHeading id="preview-students">Estudiantes</PreviewHeading><span className="count-label">{module.studentsCount} registros</span></header>
         {module.students.length === 0 ? (
           <p className="preview-empty">Sin estudiantes cargados.</p>
         ) : (
-          <div className="ledger-wrap preview-wrap">
+          <div className="ledger-wrap panel-table preview-wrap" tabIndex={0} role="region" aria-label="Datos cargados en el módulo">
             <table className="ledger preview-table">
               <thead><tr><th scope="col">Registro</th><th scope="col">Nombre</th><th scope="col">Correo</th></tr></thead>
               <tbody>
@@ -98,12 +99,12 @@ function ModuleDetailPage() {
         )}
       </section>
 
-      <section aria-labelledby="preview-sessions">
-        <h3 className="preview-title" id="preview-sessions">Fechas de clase <span>{module.sessionsCount}</span></h3>
+      <section className="workspace-panel preview-panel" aria-labelledby="preview-sessions">
+        <header className="panel-heading"><PreviewHeading id="preview-sessions">Fechas de clase</PreviewHeading><span className="count-label">{module.sessionsCount} fechas</span></header>
         {module.sessions.length === 0 ? (
           <p className="preview-empty">Sin fechas cargadas.</p>
         ) : (
-          <div className="ledger-wrap preview-wrap">
+          <div className="ledger-wrap panel-table preview-wrap" tabIndex={0} role="region" aria-label="Datos cargados en el módulo">
             <table className="ledger preview-table">
               <thead><tr><th scope="col">Fecha</th><th scope="col">Horario</th></tr></thead>
               <tbody>
@@ -127,12 +128,8 @@ function ModuleDetailPage() {
         <ArrowLeft size={15} aria-hidden="true" />
         Módulos
       </Link>
-      <div className="module-heading">
-        <h2 className="page-title" id="module-title">{module.name}</h2>
-        <span className={`module-status module-status--${module.status}`}>
-          {isDraft ? 'Borrador' : module.status === 'active' ? 'Activo' : 'Archivado'}
-        </span>
-      </div>
+      <PageHeading id="module-title" title={module.name} description={isDraft ? 'Carga los datos, revisa el contenido y activa el módulo cuando esté listo.' : 'Consulta los estudiantes y las fechas de clase de este módulo.'}
+        actions={<span className={`module-status module-status--${module.status}`}>{isDraft ? 'Borrador' : module.status === 'active' ? 'Activo' : 'Archivado'}</span>} />
 
       {feedback && (
         <p className={`page-feedback page-feedback--${feedback.type}`} role={feedback.type === 'error' ? 'alert' : 'status'}>
@@ -180,7 +177,7 @@ function ModuleDetailPage() {
 
           <li className={`module-step${ready ? ' is-current' : ''}`}>
             <span className="module-step-marker" aria-hidden="true">3</span>
-            <div className="module-step-body">
+            <div className="module-step-body module-activation">
               <h2>Activa el módulo</h2>
               <p>
                 {ready

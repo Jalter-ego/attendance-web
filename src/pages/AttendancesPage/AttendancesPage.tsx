@@ -1,5 +1,7 @@
-import { Download, Search } from 'lucide-react'
+import { CalendarCheck, Download, Search, X } from 'lucide-react'
 import { useState } from 'react'
+import PageHeading from '../../components/shared/PageHeading'
+import EmptyState from '../../components/shared/EmptyState'
 import ConfirmDialog, { type DialogAction } from '../../components/shared/ConfirmDialog'
 import AttendanceGrid from '../../features/attendance/components/AttendanceGrid'
 import { useAttendanceExport } from '../../features/attendance/hooks/use-attendance-export'
@@ -20,13 +22,12 @@ function AttendancesPage() {
   const [studentFilter, setStudentFilter] = useState('')
   const [editing, setEditing] = useState<OverviewRecord | null>(null)
 
-  if (state.status === 'loading') return <p className="page-status" role="status">Cargando asistencias…</p>
+  if (state.status === 'loading') return <section><PageHeading title="Asistencias" description="Consulta y corrige la asistencia del módulo activo." /><p className="page-status" role="status">Cargando asistencias…</p></section>
   if (state.status === 'error') {
     return (
-      <div className="page-error" role="alert">
-        <p>{state.message}</p>
-        <button className="secondary-button" type="button" onClick={retry}>Volver a intentar</button>
-      </div>
+      <section><PageHeading title="Asistencias" description="Consulta y corrige la asistencia del módulo activo." />
+        <div className="page-error" role="alert"><p>{state.message}</p><button className="secondary-button" type="button" onClick={retry}>Volver a intentar</button></div>
+      </section>
     )
   }
 
@@ -79,10 +80,7 @@ function AttendancesPage() {
 
   return (
     <section aria-labelledby="attendances-title">
-      <div className="attendances-heading">
-        <h2 className="page-title" id="attendances-title">{data.module.name}</h2>
-
-        {/* RF-17 */}
+      <PageHeading id="attendances-title" title="Asistencias" description={data.module.name} actions={
         <div className="attendances-export">
           <button
             className="secondary-button"
@@ -91,16 +89,24 @@ function AttendancesPage() {
               date: dateFilter || undefined,
               studentId: onlyStudent?.id,
             })}
-            disabled={exporter.exporting || allSessions.length === 0 || allStudents.length === 0}
+            disabled={exporter.exporting || sessions.length === 0 || students.length === 0}
           >
             <Download size={15} strokeWidth={2} aria-hidden="true" />
             {exporter.exporting ? 'Generando…' : 'Descargar Excel'}
           </button>
           <span className="attendances-export-scope">{exportScope}</span>
         </div>
-      </div>
+      } />
 
-      <div className="attendances-filters">
+      <dl className="summary-grid attendance-summary">
+        {cards.map((card) => (
+          <div className={`summary-card summary-card--${card.tone}`} key={card.label}><dt>{card.label}</dt><dd>{card.value}</dd></div>
+        ))}
+      </dl>
+
+      <div className="workspace-panel attendance-panel">
+        <header className="panel-heading"><div><h2>Registro de asistencia</h2><p>Un registro por estudiante y fecha de clase.</p></div><span className="count-label">{students.length} estudiantes · {sessions.length} fechas</span></header>
+      <div className="attendances-filters panel-toolbar">
         <label className="filter-field">
           <span>Fecha</span>
           <select value={dateFilter} onChange={(event) => setDateFilter(event.target.value)}>
@@ -125,6 +131,7 @@ function AttendancesPage() {
           />
           </span>
         </label>
+        {(dateFilter || studentFilter) && <button className="secondary-button" type="button" onClick={() => { setDateFilter(''); setStudentFilter('') }}><X size={14} aria-hidden="true" />Quitar filtros</button>}
       </div>
 
       {exporter.feedback && (
@@ -143,15 +150,6 @@ function AttendancesPage() {
         </p>
       )}
 
-      <dl className="summary-grid">
-        {cards.map((card) => (
-          <div className={`summary-card summary-card--${card.tone}`} key={card.label}>
-            <dt>{card.label}</dt>
-            <dd>{card.value}</dd>
-          </div>
-        ))}
-      </dl>
-
       {feedback && (
         <p className={`page-feedback page-feedback--${feedback.type}`} role={feedback.type === 'error' ? 'alert' : 'status'}>
           {feedback.text}
@@ -159,9 +157,9 @@ function AttendancesPage() {
       )}
 
       {allSessions.length === 0 || allStudents.length === 0 ? (
-        <p className="attendances-empty">El módulo activo todavía no tiene estudiantes o fechas de clase.</p>
+        <EmptyState icon={CalendarCheck} title="Sin registros de asistencia" description="El módulo activo todavía no tiene estudiantes o fechas de clase." />
       ) : students.length === 0 ? (
-        <p className="attendances-empty">Ningún estudiante coincide con «{studentFilter.trim()}».</p>
+        <EmptyState icon={Search} title="Sin coincidencias" description={`Ningún estudiante coincide con «${studentFilter.trim()}».`} actions={<button className="secondary-button" type="button" onClick={() => setStudentFilter('')}>Ver todos los estudiantes</button>} />
       ) : (
         <>
           <AttendanceGrid
@@ -189,6 +187,8 @@ function AttendancesPage() {
           </div>
         </>
       )}
+
+      </div>
 
       <ConfirmDialog
         open={editing !== null}

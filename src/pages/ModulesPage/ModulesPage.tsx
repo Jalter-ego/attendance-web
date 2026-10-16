@@ -1,6 +1,8 @@
-import { Plus } from 'lucide-react'
+import { Layers, Plus } from 'lucide-react'
 import { useState, type FormEvent } from 'react'
 import { Link, useNavigate } from 'react-router'
+import PageHeading from '../../components/shared/PageHeading'
+import EmptyState from '../../components/shared/EmptyState'
 import { useAdminSession } from '../../features/auth/context/useAdminSession'
 import { useModules } from '../../features/modules/hooks/use-modules'
 import { createModule } from '../../features/modules/services/modules-api'
@@ -53,9 +55,10 @@ function ModulesPage() {
   ].filter((group) => group.items.length > 0)
 
   return (
-    <section aria-label="Módulos de la institución">
+    <section aria-labelledby="modules-title">
+      <PageHeading id="modules-title" title="Módulos" description="Prepara los estudiantes y las fechas de cada módulo de tu institución." />
 
-      <form className="module-create" onSubmit={(event) => void handleCreate(event)}>
+      <form className="module-create workspace-panel" onSubmit={(event) => void handleCreate(event)}>
         <div className="module-create-text">
           <h2>Preparar un nuevo módulo</h2>
           <p>
@@ -75,7 +78,9 @@ function ModulesPage() {
         {error && <p className="page-feedback page-feedback--error" role="alert">{error}</p>}
       </form>
 
-      {state.status === 'loading' && <p className="page-status" role="status">Cargando módulos…</p>}
+      <div className="workspace-panel modules-list">
+        <header className="panel-heading"><div><h2>Módulos de la institución</h2><p>El módulo en curso y los borradores por preparar.</p></div>{state.status === 'ready' && <span className="count-label">{active.length + drafts.length} módulos</span>}</header>
+      {state.status === 'loading'  && <p className="page-status" role="status">Cargando módulos…</p>}
 
       {state.status === 'error' && (
         <div className="page-error" role="alert">
@@ -86,16 +91,16 @@ function ModulesPage() {
 
       {state.status === 'ready' && (
         groups.length === 0 ? (
-          <p className="page-status">Todavía no hay módulos. Crea el primero arriba.</p>
+          <EmptyState icon={Layers} title="Tu primer módulo empieza aquí" description="Crea un borrador con el formulario de arriba. Luego podrás cargar estudiantes y fechas de clase." />
         ) : (
-          <div className="ledger-wrap">
+          <div className="ledger-wrap panel-table" tabIndex={0} role="region" aria-label="Lista de módulos">
             <table className="ledger module-table">
               <thead>
                 <tr>
                   <th scope="col">Módulo</th>
                   <th scope="col">Estudiantes</th>
                   <th scope="col">Fechas</th>
-                  <th scope="col"><span className="visually-hidden">Estado</span></th>
+                  <th scope="col">Estado</th>
                 </tr>
               </thead>
               {groups.map((group) => (
@@ -121,6 +126,7 @@ function ModulesPage() {
           </div>
         )
       )}
+      </div>
     </section>
   )
 }
