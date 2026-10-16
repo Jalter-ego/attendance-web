@@ -1,6 +1,8 @@
+import { ChevronLeft, ChevronRight, X } from 'lucide-react'
 import { useSearchParams } from 'react-router'
 import { PAGE_SIZE, useActivity } from '../../features/activity/hooks/use-activity'
-import { actionLabel, describeActivity, formatDateTime } from '../../features/activity/utils/describe'
+import type { ActivityItem } from '../../features/activity/types/activity'
+import { actionLabel, describeActivity, formatDateTime, formatDayHeading, formatTime, localDay } from '../../features/activity/utils/describe'
 import { useAdminSession } from '../../features/auth/context/useAdminSession'
 import { useStudents } from '../../features/students/hooks/use-students'
 import './ActivityPage.css'
@@ -31,10 +33,17 @@ function ActivityPage() {
   const from = data && data.total > 0 ? data.offset + 1 : 0
   const to = data ? data.offset + data.items.length : 0
 
+  // El API manda del más reciente al más antiguo: se agrupa por día local sin reordenar
+  const days: { key: string; heading: string; items: ActivityItem[] }[] = []
+  for (const item of data?.items ?? []) {
+    const key = localDay(item.createdAt)
+    const last = days.at(-1)
+    if (last?.key === key) last.items.push(item)
+    else days.push({ key, heading: formatDayHeading(item.createdAt), items: [item] })
+  }
+
   return (
-    <section aria-labelledby="activity-title">
-      <span className="section-kicker">ACTIVIDAD</span>
-      <h1 className="page-title" id="activity-title">Historial de actividades</h1>
+    <section aria-label="Historial de actividades">
 
       <div className="activity-filters">
         <label className="filter-field">
@@ -58,9 +67,11 @@ function ActivityPage() {
         </label>
         {(studentId || date) && (
           <button className="secondary-button activity-clear" type="button" onClick={() => update({ estudiante: '', fecha: '', pagina: '' })}>
+            <X size={15} aria-hidden="true" />
             Quitar filtros
           </button>
         )}
+        {data && data.total > 0 && <p className="ledger-count activity-count">{from}–{to} de {data.total}</p>}
       </div>
 
       {error ? (
@@ -76,40 +87,42 @@ function ActivityPage() {
         </p>
       ) : (
         <>
-          <div className={`activity-table-wrap${loading ? ' is-loading' : ''}`} aria-busy={loading}>
-            <table className="activity-table">
+          <div className={`ledger-wrap${loading ? ' is-loading' : ''}`} aria-busy={loading}>
+            <table className="ledger activity-table">
               <thead>
                 <tr>
-                  <th scope="col">Fecha y hora</th>
-                  <th scope="col">Usuario</th>
+                  <th scope="col">Hora</th>
+                  <th scope="col">Quién</th>
                   <th scope="col">Acción</th>
                   <th scope="col">Detalle</th>
                 </tr>
               </thead>
-              <tbody>
-                {data.items.map((item) => (
-                  <tr key={item.id}>
-                    <td className="activity-time">{formatDateTime(item.createdAt)}</td>
-                    <td>
-                      <span className="activity-actor">{item.actor.name ?? 'Usuario eliminado'}</span>
-                      <span className={`actor-type actor-type--${item.actor.type}`}>
-                        {item.actor.type === 'admin' ? 'Admin' : 'Estudiante'}
-                      </span>
-                    </td>
-                    <td className={`activity-action activity-action--${item.action.toLowerCase()}`}>
-                      {actionLabel[item.action]}
-                    </td>
-                    <td className="activity-detail">
-                      {describeActivity(item, (id) => names.get(id) ?? null) || '—'}
-                    </td>
+              {days.map((day) => (
+                <tbody key={day.key}>
+                  <tr className="ledger-group">
+                    <th scope="colgroup" colSpan={4}>{day.heading}</th>
                   </tr>
-                ))}
-              </tbody>
+                  {day.items.map((item) => (
+                    <tr key={item.id}>
+                      <td className="activity-time" title={formatDateTime(item.createdAt)}>{formatTime(item.createdAt)}</td>
+                      <td>
+                        <span className="activity-actor">{item.actor.name ?? 'Usuario eliminado'}</span>
+                        <span className="activity-role">{item.actor.type === 'admin' ? 'Administrador' : 'Estudiante'}</span>
+                      </td>
+                      <td className={`activity-action activity-action--${item.action.toLowerCase()}`}>
+                        {actionLabel[item.action]}
+                      </td>
+                      <td className="activity-detail">
+                        {describeActivity(item, (id) => names.get(id) ?? null) || '—'}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              ))}
             </table>
           </div>
 
           <nav className="activity-pagination" aria-label="Páginas del historial">
-            <p>{from}–{to} de {data.total}</p>
             <div>
               <button
                 className="secondary-button"
@@ -117,6 +130,7 @@ function ActivityPage() {
                 onClick={() => update({ pagina: page - 1 > 1 ? String(page - 1) : '' })}
                 disabled={page <= 1 || loading}
               >
+                <ChevronLeft size={15} aria-hidden="true" />
                 Anterior
               </button>
               <span>Página {Math.min(page, pages)} de {pages}</span>
@@ -127,6 +141,7 @@ function ActivityPage() {
                 disabled={page >= pages || loading}
               >
                 Siguiente
+                <ChevronRight size={15} aria-hidden="true" />
               </button>
             </div>
           </nav>

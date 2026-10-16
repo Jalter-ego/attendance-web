@@ -1,3 +1,4 @@
+import { Download, Search } from 'lucide-react'
 import { useState } from 'react'
 import ConfirmDialog, { type DialogAction } from '../../components/shared/ConfirmDialog'
 import AttendanceGrid from '../../features/attendance/components/AttendanceGrid'
@@ -5,6 +6,7 @@ import { useAttendanceExport } from '../../features/attendance/hooks/use-attenda
 import { cellKey, useAttendanceOverview } from '../../features/attendance/hooks/use-attendance-overview'
 import type { OverviewRecord, OverviewStudent } from '../../features/attendance/types/admin'
 import type { ClassSession } from '../../features/attendance/types/attendance'
+import StatusIcon from '../../features/attendance/components/StatusIcon'
 import { formatClassDate, statusLabel } from '../../features/attendance/utils/format'
 import { useAdminSession } from '../../features/auth/context/useAdminSession'
 import './AttendancesPage.css'
@@ -50,7 +52,7 @@ function AttendancesPage() {
     { label: 'Asistencias', value: total('present'), tone: 'present' },
     { label: 'Faltas', value: total('absent'), tone: 'absent' },
     { label: 'Pendientes hoy', value: total('pending'), tone: 'pending' },
-    { label: 'Por venir', value: total('upcoming'), tone: 'upcoming' },
+    { label: 'Próximas', value: total('upcoming'), tone: 'upcoming' },
   ]
 
   // El API filtra el export por `studentId`, pero el buscador de arriba es texto
@@ -77,8 +79,26 @@ function AttendancesPage() {
 
   return (
     <section aria-labelledby="attendances-title">
-      <span className="section-kicker">ASISTENCIAS</span>
-      <h1 className="page-title" id="attendances-title">{data.module.name}</h1>
+      <div className="attendances-heading">
+        <h2 className="page-title" id="attendances-title">{data.module.name}</h2>
+
+        {/* RF-17 */}
+        <div className="attendances-export">
+          <button
+            className="secondary-button"
+            type="button"
+            onClick={() => void exporter.exportTo({
+              date: dateFilter || undefined,
+              studentId: onlyStudent?.id,
+            })}
+            disabled={exporter.exporting || allSessions.length === 0 || allStudents.length === 0}
+          >
+            <Download size={15} strokeWidth={2} aria-hidden="true" />
+            {exporter.exporting ? 'Generando…' : 'Descargar Excel'}
+          </button>
+          <span className="attendances-export-scope">{exportScope}</span>
+        </div>
+      </div>
 
       <div className="attendances-filters">
         <label className="filter-field">
@@ -94,30 +114,17 @@ function AttendancesPage() {
         </label>
         <label className="filter-field">
           <span>Estudiante</span>
-          <input
+          <span className="search-field">
+            <Search size={15} aria-hidden="true" />
+            <input
             type="search"
             value={studentFilter}
             onChange={(event) => setStudentFilter(event.target.value)}
             placeholder="Nombre o número de registro"
             autoComplete="off"
           />
+          </span>
         </label>
-
-        {/* RF-17 */}
-        <div className="attendances-export">
-          <button
-            className="secondary-button"
-            type="button"
-            onClick={() => void exporter.exportTo({
-              date: dateFilter || undefined,
-              studentId: onlyStudent?.id,
-            })}
-            disabled={exporter.exporting || allSessions.length === 0 || allStudents.length === 0}
-          >
-            {exporter.exporting ? 'Generando…' : 'Descargar Excel'}
-          </button>
-          <span className="attendances-export-scope">{exportScope}</span>
-        </div>
       </div>
 
       {exporter.feedback && (
@@ -165,10 +172,21 @@ function AttendancesPage() {
             saving={saving}
             onEdit={setEditing}
           />
-          <p className="attendances-hint">
-            Haz clic en una celda para corregirla. El punto <span aria-hidden="true">•</span> indica
-            que la corrigió un administrador. Las fechas que aún no llegan no se pueden editar.
-          </p>
+          <div className="attendances-legend">
+            <ul aria-label="Significado de las marcas">
+              {(['present', 'absent', 'pending', 'upcoming'] as const).map((status) => (
+                <li key={status}>
+                  <span className={`grid-mark grid-mark--${status}`} aria-hidden="true"><StatusIcon status={status} size={13} /></span>
+                  {statusLabel[status]}
+                </li>
+              ))}
+              <li>
+                <span className="grid-mark grid-mark--present is-edited" aria-hidden="true"><StatusIcon status="present" size={13} /></span>
+                Corregida por un administrador
+              </li>
+            </ul>
+            <p>Haz clic en una marca para corregirla. Las fechas que aún no llegan no se pueden editar.</p>
+          </div>
         </>
       )}
 

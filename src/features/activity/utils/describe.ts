@@ -19,6 +19,31 @@ export function formatDateTime(iso: string): string {
   return dateTimeFormat.format(new Date(iso))
 }
 
+const timeFormat = new Intl.DateTimeFormat('es', { hour: '2-digit', minute: '2-digit', hour12: false })
+const dayFormat = new Intl.DateTimeFormat('es', { weekday: 'long', day: 'numeric', month: 'long' })
+
+/** Día local de un instante, como 'YYYY-MM-DD', para agrupar el historial */
+export function localDay(iso: string | Date): string {
+  const date = new Date(iso)
+  const pad = (value: number) => String(value).padStart(2, '0')
+  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`
+}
+
+export function formatTime(iso: string): string {
+  return timeFormat.format(new Date(iso))
+}
+
+/** Encabezado de un día del historial: "Hoy", "Ayer" o "Martes, 13 de octubre" */
+export function formatDayHeading(iso: string, now = new Date()): string {
+  const day = localDay(iso)
+  if (day === localDay(now)) return 'Hoy'
+  const yesterday = new Date(now)
+  yesterday.setDate(now.getDate() - 1)
+  if (day === localDay(yesterday)) return 'Ayer'
+  const label = dayFormat.format(new Date(iso))
+  return label.charAt(0).toUpperCase() + label.slice(1)
+}
+
 const text = (value: unknown) => (typeof value === 'string' && value ? value : null)
 const number = (value: unknown) => (typeof value === 'number' ? value : null)
 const status = (value: unknown) =>

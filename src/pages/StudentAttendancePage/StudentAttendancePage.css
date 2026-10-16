@@ -1,69 +1,112 @@
-/* Botón de marcar, en la fila de hoy (RF-03) */
+/* Botón de marcar, en la fila de hoy (RF-03). Es la acción del día: más grande que el resto */
 .mark-button {
-  padding: 8px 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px 18px;
   border: 0;
   border-radius: var(--radius-sm);
   color: #fff;
   background: var(--color-brand);
   font-size: var(--text-base);
-  font-weight: 700;
+  font-weight: 600;
   white-space: nowrap;
   cursor: pointer;
   transition: background var(--transition);
 }
 
 .mark-button:hover:not(:disabled) { background: var(--color-brand-stronger); }
-.mark-button:focus-visible { outline: 3px solid var(--color-brand-ring); outline-offset: 3px; }
+.mark-button:focus-visible { outline: var(--focus-ring); outline-offset: 2px; }
 .mark-button:disabled { cursor: wait; opacity: 0.7; }
 
-/* Estados */
+/* Estados, con el mismo ícono que la grilla del admin; el color va en el ícono y el texto */
 .status-badge {
-  display: inline-block;
-  padding: 4px 10px;
-  border-radius: var(--radius-pill);
-  font-size: var(--text-sm);
-  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--text-base);
+  font-weight: 500;
   white-space: nowrap;
 }
 
-.status-badge--present { color: var(--color-present); background: var(--color-present-bg); }
-.status-badge--absent { color: var(--color-absent); background: var(--color-absent-bg); }
-.status-badge--pending { color: var(--color-pending); background: var(--color-pending-bg); }
-.status-badge--upcoming { color: var(--color-upcoming); background: var(--color-upcoming-bg); }
+.status-badge--present { color: var(--color-present); }
+.status-badge--absent { color: var(--color-absent); }
+.status-badge--pending { color: var(--color-pending); }
+.status-badge--upcoming { color: var(--color-text-muted); }
 
 /* Historial (RF-05) */
 .history { margin-top: var(--space-6); }
 
+.history-heading { margin-bottom: var(--space-5); }
+.history-heading .eyebrow { margin-bottom: var(--space-2); }
+.history-heading .page-title { margin-bottom: var(--space-1); font-size: 26px; letter-spacing: -1px; }
+.history-heading p:not(.eyebrow) { margin: 0; color: var(--color-text-muted); font-size: var(--text-md); }
+
 .history-empty { color: var(--color-text-body); }
 
-.history-table-wrap {
-  overflow-x: auto;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
-  background: var(--color-surface);
-}
+.history-table { min-width: 520px; font-size: var(--text-md); }
+.history-table td { vertical-align: middle; }
+.history-hours,
+.history-marked { color: var(--color-text-body); font-variant-numeric: tabular-nums; }
 
-.history-table { width: 100%; min-width: 520px; border-collapse: collapse; font-size: var(--text-md); }
-
-.history-table th {
-  padding: 12px 18px;
-  border-bottom: 1px solid var(--color-border);
-  color: var(--color-text-body);
-  font-size: var(--text-sm);
-  font-weight: 600;
-  text-align: left;
-}
-
-.history-table td { padding: 14px 18px; border-bottom: 1px solid var(--color-border); }
-.history-table tbody tr:last-child td { border-bottom: 0; }
-.history-table tr.is-today td { background: var(--color-surface-selected); }
+/* Hoy: fondo apenas verde y una línea fina a la izquierda */
+.history-table tr.is-today td,
+.history-table tbody tr.is-today:hover td { background: #f4f8f5; }
+.history-table tr.is-today td:first-child { box-shadow: inset 2px 0 var(--color-brand); }
+.history-table tr.is-today .history-date { font-weight: 600; }
 
 .today-tag {
-  margin-left: var(--space-2);
+  margin-right: var(--space-2);
   padding: 2px 7px;
   border-radius: 5px;
-  color: var(--color-brand-muted);
+  color: var(--color-brand);
   background: var(--color-surface-tint);
   font-size: var(--text-xs);
   font-weight: 700;
+}
+
+/* Celular: cada fecha es un bloque y la de hoy sube al principio */
+@media (max-width: 600px) {
+  .history-table,
+  .history-table tbody { display: block; min-width: 0; }
+
+  .history-table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+
+  .history-table tbody { display: flex; flex-direction: column; }
+
+  .history-table tbody tr {
+    display: grid;
+    grid-template-areas: 'date status' 'hours status';
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    column-gap: var(--space-3);
+    padding: var(--space-3);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .history-table td { padding: 1px 0; border: 0; background: none; }
+  .history-table tbody tr:hover td { background: none; }
+  .history-date { grid-area: date; }
+  .history-hours { grid-area: hours; font-size: var(--text-sm); }
+  .history-status { grid-area: status; }
+  .history-marked { display: none; }
+
+  .history-table tr.is-today {
+    order: -1;
+    grid-template-areas: 'date' 'hours' 'status';
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 2px;
+    margin-bottom: var(--space-4);
+    padding: var(--space-4);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: #f4f8f5;
+  }
+
+  .history-table tr.is-today td,
+  .history-table tr.is-today td:first-child,
+  .history-table tbody tr.is-today:hover td { background: none; box-shadow: none; }
+  .history-table tr.is-today .history-status { margin-top: var(--space-3); }
+  .history-table tr.is-today .mark-button { width: 100%; padding-block: 14px; }
 }

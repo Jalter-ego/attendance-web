@@ -1,3 +1,4 @@
+import { Check } from 'lucide-react'
 import type { Feedback } from '../hooks/use-student-attendance'
 import type { AttendanceHistory as History } from '../types/attendance'
 import { formatClassDate, formatMarkedAt } from '../utils/format'
@@ -32,8 +33,9 @@ function AttendanceHistory({ history, marking, feedback, onMark }: AttendanceHis
   return (
     <section className="history" aria-labelledby="history-title">
       <div className="history-heading">
-        <span className="section-kicker">MI ASISTENCIA</span>
-        <h2 className="page-title" id="history-title">{history.module.name}</h2>
+        <p className="eyebrow">Tu registro</p>
+        <h1 className="page-title" id="history-title">Mi asistencia</h1>
+        <p>{history.module.name}</p>
       </div>
 
       <dl className="summary-grid">
@@ -54,8 +56,8 @@ function AttendanceHistory({ history, marking, feedback, onMark }: AttendanceHis
       {history.sessions.length === 0 ? (
         <p className="history-empty">Este módulo todavía no tiene fechas de clase.</p>
       ) : (
-        <div className="history-table-wrap">
-          <table className="history-table">
+        <div className="ledger-wrap">
+          <table className="ledger history-table">
             <thead>
               <tr>
                 <th scope="col">Fecha</th>
@@ -67,21 +69,22 @@ function AttendanceHistory({ history, marking, feedback, onMark }: AttendanceHis
             <tbody>
               {history.sessions.map((session) => (
                 <tr key={session.id} className={session.classDate === history.today ? 'is-today' : undefined}>
-                  <td>
-                    {formatClassDate(session.classDate)}
+                  <td className="history-date">
                     {session.classDate === history.today && <span className="today-tag">Hoy</span>}
+                    {formatClassDate(session.classDate)}
                   </td>
-                  <td>{session.startTime} – {session.endTime}</td>
-                  <td>
+                  <td className="history-hours">{session.startTime} – {session.endTime}</td>
+                  <td className="history-status">
                     {session.status === 'pending' ? (
                       <button className="mark-button" type="button" onClick={onMark} disabled={marking}>
+                        <Check size={16} strokeWidth={2.5} aria-hidden="true" />
                         {marking ? 'Registrando…' : 'Marcar asistencia'}
                       </button>
                     ) : (
                       <StatusBadge status={session.status} />
                     )}
                   </td>
-                  <td>{session.markedAt ? formatMarkedAt(session.markedAt) : '—'}</td>
+                  <td className="history-marked">{session.markedAt ? formatMarkedAt(session.markedAt) : '—'}</td>
                 </tr>
               ))}
             </tbody>

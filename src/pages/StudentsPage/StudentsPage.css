@@ -4,51 +4,15 @@
   align-items: center;
   justify-content: space-between;
   gap: var(--space-3) var(--space-5);
-  margin-bottom: var(--space-4);
+  margin-bottom: var(--space-5);
 }
 
 .students-search { flex: 1 1 320px; max-width: 460px; }
 
-.students-search input {
-  width: 100%;
-  padding: 11px 14px;
-  border: 1px solid var(--color-border-control);
-  border-radius: var(--radius-md);
-  color: var(--color-text);
-  background: var(--color-surface);
-  font-size: var(--text-md);
-}
-
-.students-search input:hover { border-color: var(--color-border-hover); }
-.students-search input:focus { border-color: var(--color-brand-soft); outline: var(--focus-ring); }
-
-.students-count { margin: 0; color: var(--color-text-body); font-size: var(--text-base); }
-
 .students-empty { color: var(--color-text-body); }
 
-.students-table-wrap {
-  overflow-x: auto;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
-  background: var(--color-surface);
-  transition: opacity var(--transition);
-}
-
-/* Búsqueda en curso: la lista anterior queda visible pero atenuada */
-.students-table-wrap.is-loading { opacity: 0.6; }
-
-.students-table { width: 100%; min-width: 480px; border-collapse: collapse; font-size: var(--text-md); }
-
-.students-table th {
-  padding: 12px 18px;
-  border-bottom: 1px solid var(--color-border);
-  color: var(--color-text-body);
-  font-size: var(--text-sm);
-  font-weight: 600;
-  text-align: left;
-}
-
-.students-table td { padding: 14px 18px; border-bottom: 1px solid var(--color-border); }
-.students-table tbody tr:last-child td { border-bottom: 0; }
-.students-registration { font-weight: 600; font-variant-numeric: tabular-nums; }
+.students-table { min-width: 520px; font-size: var(--text-md); }
+.students-table th:first-child { width: 120px; }
+.students-registration { color: var(--color-text-body); font-variant-numeric: tabular-nums; }
+.students-name { font-weight: 600; }
 .students-email { color: var(--color-text-body); overflow-wrap: anywhere; }
