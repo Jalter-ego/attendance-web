@@ -1,5 +1,19 @@
 # Control de asistencia · React + Vite
 
+## Tema visual
+
+La paleta está centralizada en `src/styles/tokens.css`. El verde de marca actual
+es `--color-brand: #315b40`; al cambiarlo se recalculan sus variantes para enlaces,
+botones, selecciones y foco. Textos, fondos y bordes tienen variables propias.
+Los colores de asistencia y de errores se mantienen separados de la marca.
+Los componentes deben usar estas variables en lugar de escribir colores directamente.
+
+El rediseño abarca Inicio, Estudiantes, Asistencias, Módulos, detalle del módulo,
+Actividad, acceso y el área del estudiante. Los encabezados, paneles, estados
+vacíos y tablas comparten componentes y estilos en `src/components/shared` y
+`src/styles/workspace.css`. La tabla de Estudiantes ordena por nombre o registro
+y muestra 20 estudiantes por página; la búsqueda sigue consultando al servidor sobre el módulo activo.
+
 ## Desarrollo local
 
 ```bash
@@ -47,8 +61,8 @@ Las variables `VITE_*` son públicas: no guardes secretos en ellas.
 
 - **Administrador:** institución, correo y contraseña → `POST /auth/admin/login`.
 - **Estudiante:** institución y correo o número de registro → `POST /auth/student/login`.
-- Cada rol tiene una pantalla inicial distinta. Las demás funciones se indican como
-  **Próximamente** y todavía no ejecutan operaciones de asistencia o administración.
+- El administrador dispone de Inicio, Asistencias, Estudiantes, Módulos y Actividad.
+- El estudiante puede consultar su historial y marcar la asistencia de la clase de hoy.
 - El acceso de superadmin queda fuera de esta versión. El login institucional
   siempre envía un tenant no vacío.
 

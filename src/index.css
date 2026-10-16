@@ -1,5 +1,6 @@
 @import './styles/tokens.css';
 @import './styles/page.css';
+@import './styles/workspace.css';
 
 :root {
   font-family: var(--font-sans);
@@ -25,7 +26,9 @@ body {
 }
 
 button,
-input {
+input,
+select,
+textarea {
   font: inherit;
 }
 
@@ -35,4 +38,12 @@ button {
 
 #root {
   min-height: 100vh;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    transition: none !important;
+    animation: none !important;
+    scroll-behavior: auto !important;
+  }
 }
