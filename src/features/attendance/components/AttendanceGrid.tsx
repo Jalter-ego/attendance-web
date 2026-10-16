@@ -46,7 +46,7 @@ function AttendanceGrid({ students, sessions, records, today, saving, onEdit }: 
   }, [today, sessions.length])
 
   return (
-    <div className="grid-wrap" ref={wrapRef}>
+    <div className="grid-wrap" ref={wrapRef} tabIndex={0} role="region" aria-label="Asistencia por estudiante y fecha">
       <table className="attendance-grid">
         <thead>
           <tr>

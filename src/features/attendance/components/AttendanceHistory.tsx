@@ -1,8 +1,10 @@
-import { Check } from 'lucide-react'
+import { CalendarDays, Check, Clock } from 'lucide-react'
 import type { Feedback } from '../hooks/use-student-attendance'
 import type { AttendanceHistory as History } from '../types/attendance'
 import { formatClassDate, formatMarkedAt } from '../utils/format'
 import StatusBadge from './StatusBadge'
+import PageHeading from '../../../components/shared/PageHeading'
+import EmptyState from '../../../components/shared/EmptyState'
 
 type AttendanceHistoryProps = {
   history: History
@@ -14,11 +16,14 @@ type AttendanceHistoryProps = {
 /**
  * Historial personal con resumen (RF-04, RF-05).
  *
- * La fila de hoy sin marca (`pending`) lleva el botón para marcar (RF-03): es la
- * única fecha en la que el estudiante puede hacerlo.
+ * La clase de hoy se destaca antes del resumen y del historial. El botón para
+ * marcar solo aparece si hoy tiene una clase pendiente (RF-03).
  */
 function AttendanceHistory({ history, marking, feedback, onMark }: AttendanceHistoryProps) {
   const { summary } = history
+  const todaySession = history.sessions.find((session) => session.classDate === history.today)
+  const nextSession = history.sessions.filter((session) => session.classDate > history.today).sort((a, b) => a.classDate.localeCompare(b.classDate))[0]
+  const upcomingSession = todaySession ?? nextSession
   // El porcentaje solo cuenta fechas ya cerradas: las que vienen todavía no suman ni restan
   const closed = summary.present + summary.absent
   const rate = closed > 0 ? Math.round((summary.present / closed) * 100) : null
@@ -32,11 +37,19 @@ function AttendanceHistory({ history, marking, feedback, onMark }: AttendanceHis
 
   return (
     <section className="history" aria-labelledby="history-title">
-      <div className="history-heading">
-        <p className="eyebrow">Tu registro</p>
-        <h1 className="page-title" id="history-title">Mi asistencia</h1>
-        <p>{history.module.name}</p>
-      </div>
+      <PageHeading id="history-title" title="Mi asistencia" description={history.module.name} />
+
+      <section className="student-today workspace-panel" aria-labelledby="student-today-title">
+        <span className="student-today-icon"><CalendarDays size={24} strokeWidth={1.5} aria-hidden="true" /></span>
+        <div className="student-today-copy">
+          <h2 id="student-today-title">{todaySession ? 'Tu clase de hoy' : 'Hoy no tienes clase'}</h2>
+          <p>{todaySession ? formatClassDate(todaySession.classDate) : nextSession ? `Próxima clase: ${formatClassDate(nextSession.classDate).toLowerCase()}` : 'No hay más clases programadas en este módulo.'}</p>
+          {upcomingSession && <span className="student-today-hours"><Clock size={13} aria-hidden="true" />{upcomingSession.startTime} – {upcomingSession.endTime}</span>}
+        </div>
+        {todaySession && <div className="student-today-action">{todaySession.status === 'pending' ? (
+          <button className="mark-button" type="button" onClick={onMark} disabled={marking}><Check size={16} strokeWidth={2} aria-hidden="true" />{marking ? 'Registrando…' : 'Marcar asistencia'}</button>
+        ) : <StatusBadge status={todaySession.status} />}</div>}
+      </section>
 
       <dl className="summary-grid">
         {cards.map((card) => (
@@ -53,10 +66,12 @@ function AttendanceHistory({ history, marking, feedback, onMark }: AttendanceHis
         </p>
       )}
 
+      <section className="workspace-panel history-panel" aria-labelledby="history-list-title">
+        <header className="panel-heading"><div><h2 id="history-list-title">Historial de clases</h2><p>Las próximas fechas no afectan tu porcentaje de asistencia.</p></div><span className="count-label">{history.sessions.length} fechas</span></header>
       {history.sessions.length === 0 ? (
-        <p className="history-empty">Este módulo todavía no tiene fechas de clase.</p>
+        <EmptyState icon={CalendarDays} title="Sin clases programadas" description="Las fechas aparecerán aquí cuando tu institución las cargue en el módulo." />
       ) : (
-        <div className="ledger-wrap">
+        <div className="ledger-wrap panel-table" tabIndex={0} role="region" aria-label="Historial personal de asistencia">
           <table className="ledger history-table">
             <thead>
               <tr>
@@ -75,14 +90,7 @@ function AttendanceHistory({ history, marking, feedback, onMark }: AttendanceHis
                   </td>
                   <td className="history-hours">{session.startTime} – {session.endTime}</td>
                   <td className="history-status">
-                    {session.status === 'pending' ? (
-                      <button className="mark-button" type="button" onClick={onMark} disabled={marking}>
-                        <Check size={16} strokeWidth={2.5} aria-hidden="true" />
-                        {marking ? 'Registrando…' : 'Marcar asistencia'}
-                      </button>
-                    ) : (
-                      <StatusBadge status={session.status} />
-                    )}
+                    <StatusBadge status={session.status} />
                   </td>
                   <td className="history-marked">{session.markedAt ? formatMarkedAt(session.markedAt) : '—'}</td>
                 </tr>
@@ -91,6 +99,7 @@ function AttendanceHistory({ history, marking, feedback, onMark }: AttendanceHis
           </table>
         </div>
       )}
+      </section>
     </section>
   )
 }
