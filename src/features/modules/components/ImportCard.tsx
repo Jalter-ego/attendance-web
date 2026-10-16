@@ -66,14 +66,14 @@ function ImportCard({ title, columns, note, loaded, loadedLabel, onUpload }: Imp
       {note && <p className="import-note">{note}</p>}
 
       <form className="import-form" onSubmit={(event) => void handleSubmit(event)}>
-        <label className="visually-hidden" htmlFor={inputId}>Archivo Excel para {title.toLowerCase()}</label>
-        <input
-          id={inputId}
-          type="file"
-          accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-          onChange={(event) => { setFile(event.target.files?.[0] ?? null); setResult(null) }}
-          disabled={uploading}
-        />
+        <label className={`import-file-picker${uploading ? ' is-disabled' : ''}`} htmlFor={inputId}>
+          <Upload size={21} strokeWidth={1.5} aria-hidden="true" />
+          <span className="import-file-copy"><strong>{file ? file.name : 'Seleccionar archivo Excel'}</strong><span>{file ? 'Archivo listo para importar' : 'Formato .xlsx'}</span></span>
+          <span className="import-file-browse" aria-hidden="true">Examinar</span>
+          <input id={inputId} className="import-file-input" type="file" aria-label={`Archivo Excel para ${title.toLowerCase()}`}
+            accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+            onChange={(event) => { setFile(event.target.files?.[0] ?? null); setResult(null) }} disabled={uploading} />
+        </label>
         <button className="primary-button" type="submit" disabled={!file || uploading}>
           <Upload size={15} strokeWidth={2.2} aria-hidden="true" />
           {uploading ? 'Importando…' : loaded > 0 ? 'Reemplazar' : 'Importar'}
