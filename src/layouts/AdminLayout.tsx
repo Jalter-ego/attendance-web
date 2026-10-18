@@ -12,6 +12,7 @@ import {
 } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { Link, NavLink, Outlet, useLocation } from 'react-router'
+import BrandBackdrop from '../components/shared/BrandBackdrop'
 import { useAdminSession } from '../features/auth/context/useAdminSession'
 import { useSession } from '../features/auth/context/useSession'
 import { useModules } from '../features/modules/hooks/use-modules'
@@ -115,6 +116,7 @@ function AdminLayout() {
       </aside>
 
       <div className="app-content">
+        <BrandBackdrop className="admin-backdrop brand-backdrop--workspace" />
         <header className="app-topbar">
           <div className="app-topbar-context">
             <button
