@@ -1,0 +1,53 @@
+.brand-backdrop {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  overflow: hidden;
+  color: var(--color-brand);
+  pointer-events: none;
+  user-select: none;
+}
+
+.brand-backdrop-mark,
+.brand-backdrop-orbit,
+.brand-backdrop-circle {
+  position: absolute;
+}
+
+.brand-backdrop-mark { height: auto; }
+.brand-backdrop-orbit, .brand-backdrop-circle { border-radius: 50%; }
+
+/* La misma gráfica del login, atenuada detrás del espacio de trabajo. */
+.brand-backdrop--workspace {
+  position: fixed;
+  color: var(--color-brand-backdrop);
+}
+
+.brand-backdrop--workspace .brand-backdrop-mark {
+  top: -190px;
+  right: -150px;
+  width: clamp(540px, 45vw, 720px);
+  transform: rotate(-12deg);
+}
+
+.brand-backdrop--workspace .brand-backdrop-circle {
+  bottom: -220px;
+  left: -260px;
+  width: 600px;
+  height: 600px;
+  background: currentColor;
+}
+
+.brand-backdrop--workspace .brand-backdrop-orbit {
+  bottom: -300px;
+  left: -340px;
+  width: 760px;
+  height: 760px;
+  border: 1px solid var(--color-brand-backdrop-line);
+}
+
+@media (max-width: 860px) {
+  .brand-backdrop--workspace .brand-backdrop-mark { top: -110px; right: -155px; width: 420px; }
+  .brand-backdrop--workspace .brand-backdrop-circle { bottom: -130px; left: -185px; width: 330px; height: 330px; }
+  .brand-backdrop--workspace .brand-backdrop-orbit { bottom: -185px; left: -240px; width: 440px; height: 440px; }
+}
