@@ -1,4 +1,5 @@
 import AppHeader from '../../components/shared/AppHeader'
+import BrandBackdrop from '../../components/shared/BrandBackdrop'
 import PageHeading from '../../components/shared/PageHeading'
 import AttendanceHistory from '../../features/attendance/components/AttendanceHistory'
 import { useStudentAttendance } from '../../features/attendance/hooks/use-student-attendance'
@@ -17,6 +18,7 @@ function StudentAttendancePage({ session, onLogout, signingOut }: StudentAttenda
 
   return (
     <div className="student-shell">
+      <BrandBackdrop className="student-backdrop brand-backdrop--workspace" />
       <div className="student-header-wrap">
         <AppHeader
           institution={session.tenant.name}
