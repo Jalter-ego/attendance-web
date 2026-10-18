@@ -1,7 +1,8 @@
 /* Marco administrativo: navegación fija, cabecera compacta y espacio de trabajo. */
 .app-shell {
+  --admin-sidebar-width: 244px;
   display: grid;
-  grid-template-columns: 244px minmax(0, 1fr);
+  grid-template-columns: var(--admin-sidebar-width) minmax(0, 1fr);
   min-height: 100vh;
   font-family: var(--font-app);
   background: var(--color-surface-page);
@@ -23,6 +24,7 @@
 .app-sidebar {
   position: sticky;
   top: 0;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   height: 100vh;
@@ -56,7 +58,10 @@
 .sidebar-module-empty { color: var(--color-text-muted); }
 a.sidebar-module-name:hover, a.sidebar-module-empty:hover { color: var(--color-brand); text-decoration: underline; }
 
-.app-content { display: flex; min-width: 0; flex-direction: column; }
+.app-content { position: relative; isolation: isolate; display: flex; min-width: 0; flex-direction: column; }
+
+.admin-backdrop { left: var(--admin-sidebar-width); }
+
 .app-topbar { position: sticky; top: 0; z-index: 5; display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 68px; padding: 0 32px; border-bottom: 1px solid var(--color-border); background: var(--color-surface); }
 .app-topbar-context { display: flex; min-width: 0; align-items: center; gap: 14px; }
 .sidebar-toggle { display: grid; flex-shrink: 0; place-items: center; width: 32px; height: 32px; padding: 0; border: 0; border-radius: var(--radius-sm); color: var(--color-text-body); background: transparent; }
@@ -73,7 +78,7 @@ a.sidebar-module-name:hover, a.sidebar-module-empty:hover { color: var(--color-b
 .app-main { min-width: 0; padding: 32px 36px 64px; }
 
 @media (min-width: 861px) {
-  .is-sidebar-collapsed { grid-template-columns: 76px minmax(0, 1fr); }
+  .is-sidebar-collapsed { --admin-sidebar-width: 76px; }
   .is-sidebar-collapsed .sidebar-brand { justify-content: center; padding-inline: 0; }
   .is-sidebar-collapsed .sidebar-brand-copy, .is-sidebar-collapsed .sidebar-group-title, .is-sidebar-collapsed .sidebar-link-label, .is-sidebar-collapsed .sidebar-module { display: none; }
   .is-sidebar-collapsed .sidebar-link { justify-content: center; padding: 12px; }
@@ -86,7 +91,7 @@ a.sidebar-module-name:hover, a.sidebar-module-empty:hover { color: var(--color-b
 
 /* En móvil el menú permanece accesible como navegación horizontal. */
 @media (max-width: 860px) {
-  .app-shell { grid-template-columns: minmax(0, 1fr); }
+  .app-shell { --admin-sidebar-width: 0px; grid-template-columns: minmax(0, 1fr); }
   .app-sidebar { position: static; height: auto; overflow: visible; padding: 0 16px; border-right: 0; border-bottom: 1px solid var(--color-border); }
   .sidebar-brand { min-height: 70px; padding: 10px 0; }
   .sidebar-module { display: none; }

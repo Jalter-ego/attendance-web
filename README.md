@@ -2,11 +2,18 @@
 
 ## Tema visual
 
-La paleta está centralizada en `src/styles/tokens.css`. El verde de marca actual
-es `--color-brand: #315b40`; al cambiarlo se recalculan sus variantes para enlaces,
+La paleta está centralizada en `src/styles/tokens.css`. El acento se define en
+`--color-brand`; al cambiarlo se recalculan sus variantes para enlaces,
 botones, selecciones y foco. Textos, fondos y bordes tienen variables propias.
 Los colores de asistencia y de errores se mantienen separados de la marca.
 Los componentes deben usar estas variables en lugar de escribir colores directamente.
+
+Toda la interfaz usa **VTEX Trust**, cargada localmente desde
+`src/assets/fonts/VTEXTrust` mediante `src/styles/fonts.css`. La familia global
+se configura con `--font-sans`; los controles de formulario la heredan.
+Los layouts de acceso, administrador y estudiante comparten una gráfica vectorial
+que sigue `--color-brand`. En las áreas con sesión se atenúa con `--color-brand-backdrop` y
+`--color-brand-backdrop-line`, sin modificar los colores del contenido.
 
 El rediseño abarca Inicio, Estudiantes, Asistencias, Módulos, detalle del módulo,
 Actividad, acceso y el área del estudiante. Los encabezados, paneles, estados
